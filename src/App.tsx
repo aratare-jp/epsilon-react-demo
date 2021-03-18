@@ -1,9 +1,10 @@
 import React from "react";
 import Preferences from "./components/Preferences/Preferences";
-import Dashboard from "./components/Dashboard/Dashboard";
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import Login from "./components/Login/Login";
 import useToken from "./useToken";
+import NotFound from "./components/NotFound/NotFound";
+import Home from "./components/Home/Home";
 
 export default function App() {
 	const {token, setToken} = useToken();
@@ -30,20 +31,29 @@ export default function App() {
 						<Route path="/login">
 							<Login setToken={setToken}/>
 						</Route>
-						<Route path="/dashboard">
-							<Dashboard/>
+						<Route exact path="/"
+							   render={({location}: any) => (
+								   <Redirect to={{
+									   pathname: "/home",
+									   state: {from: location}
+								   }}/>
+							   )}/>
+						<Route path="/home">
+							<Home/>
 						</Route>
 						<Route path="/preferences">
 							<Preferences/>
 						</Route>
-						<Route
-							path="/"
-							render={({location}: any) => (
-								<Redirect to={{
-									pathname: "/dashboard",
-									state: {from: location}
-								}}/>
-							)}/>
+						<Route path="/404">
+							<NotFound/>
+						</Route>
+						<Route path="/"
+							   render={({location}: any) => (
+								   <Redirect to={{
+									   pathname: "/404",
+									   state: {from: "bruh"}
+								   }}/>
+							   )}/>
 					</Switch>
 				</BrowserRouter>
 			</div>

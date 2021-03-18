@@ -1,5 +1,4 @@
 import React from 'react';
-import './Login.css';
 import {useHistory, useLocation} from "react-router-dom";
 import * as queryString from 'query-string';
 import {Button, Form, Input,} from "antd";
