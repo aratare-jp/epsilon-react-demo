@@ -1,8 +1,7 @@
 import React from "react";
-import "./App.css";
 import Preferences from "./components/Preferences/Preferences";
 import Dashboard from "./components/Dashboard/Dashboard";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import Login from "./components/Login/Login";
 import useToken from "./useToken";
 
@@ -37,10 +36,17 @@ export default function App() {
 						<Route path="/preferences">
 							<Preferences/>
 						</Route>
+						<Route
+							path="/"
+							render={({location}: any) => (
+								<Redirect to={{
+									pathname: "/dashboard",
+									state: {from: location}
+								}}/>
+							)}/>
 					</Switch>
 				</BrowserRouter>
 			</div>
 		);
 	}
-
 }
