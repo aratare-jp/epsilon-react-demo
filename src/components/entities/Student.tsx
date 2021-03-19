@@ -2,8 +2,7 @@ import {Breadcrumb, Button, Form, Input, Layout, Modal, Select, Space, Table} fr
 import React, {useState} from "react";
 import {Link, Redirect, Route, Switch, useHistory, useParams, useRouteMatch} from "react-router-dom";
 import {ColumnType} from "antd/lib/table";
-import {ILecturer} from "../../../entities/lecturer/lecturer";
-import {db} from "../../../db";
+import {IStudent, db} from "../../db";
 import * as _ from 'lodash';
 import {v4 as uuidv4} from "uuid";
 
@@ -18,7 +17,7 @@ const tailLayout = {
 	wrapperCol: {offset: 8, span: 16},
 };
 
-export default function Lecturer() {
+export default function Student() {
 	const {path} = useRouteMatch();
 
 	return (
@@ -27,18 +26,18 @@ export default function Lecturer() {
 			<Content style={{margin: '0 16px'}}>
 				<Breadcrumb style={{margin: '16px 0'}}>
 					<Breadcrumb.Item>Entities</Breadcrumb.Item>
-					<Breadcrumb.Item>Lecturer</Breadcrumb.Item>
+					<Breadcrumb.Item>Student</Breadcrumb.Item>
 				</Breadcrumb>
 				<div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
 					<Switch>
 						<Route path={`${path}/create`}>
-							<CreateEditLecturer reroute={path}/>
+							<CreateEditStudent reroute={path}/>
 						</Route>
 						<Route path={`${path}/edit/:id`}>
-							<CreateEditLecturer reroute={path}/>
+							<CreateEditStudent reroute={path}/>
 						</Route>
 						<Route exact path={path}>
-							<ViewLecturer/>
+							<ViewStudent/>
 						</Route>
 						<Route path="/"
 							   render={({location}: any) => (
@@ -55,26 +54,26 @@ export default function Lecturer() {
 	);
 }
 
-export function ViewLecturer() {
+export function ViewStudent() {
 	const {path} = useRouteMatch();
 
-	const data: ILecturer[] = Object.values(db.lecturer);
+	const data: IStudent[] = Object.values(db.students);
 
-	const columns: ColumnType<ILecturer>[] = [
+	const columns: ColumnType<IStudent>[] = [
 		{
 			title: "First Name",
 			dataIndex: "firstName",
-			key: "firstName",
+			key: "firstName"
 		},
 		{
 			title: "Last Name",
 			dataIndex: "lastName",
-			key: "lastName",
+			key: "lastName"
 		},
 		{
 			title: "Action",
 			key: "action",
-			render: (value: any, record: ILecturer, index: number) => {
+			render: (value: any, record: IStudent, index: number) => {
 				return (
 					<Space size="middle">
 						<Link to={`${path}/edit/${record.id}`}>
@@ -94,27 +93,31 @@ export function ViewLecturer() {
 	)
 }
 
-export function CreateEditLecturer({reroute}: any) {
+export function CreateEditStudent({reroute}: any) {
 	const history = useHistory();
 	const id = useParams<{ id: string }>()?.id || uuidv4();
-	const lecturer = db.lecturer[id] || {id, courses: []};
+	const student = db.students[id]
+		||	{
+				id,
+				enrolledCourses: [],
+			};
 	const [showModal, setShowModal] = useState<boolean>(false);
 
-	const onFinish = (newLecturer: ILecturer) => {
-		const oldCourses = lecturer.courses;
-		const newCourses = newLecturer.courses;
+	const onFinish = (newStudent: IStudent) => {
+		const oldEnrolledCourses = student.enrolledCourses;
+		const newEnrolledCourses = newStudent.enrolledCourses;
 
-		db.lecturer[id] = {...newLecturer, id};
-
-		// Remove the current lecturer from all courses.
-		for (const oldCourse of oldCourses) {
-			_.remove(db.course[oldCourse].lecturers, e => e === id);
+		// Remove the current Student from all Courses.
+		for (const oldId of oldEnrolledCourses) {
+			_.remove(db.courses[oldId].enrolledStudents, e => e === id);
 		}
 
-		// Re-add the current lecturer to all new courses.
-		for (const newCourse of newCourses) {
-			db.course[newCourse].lecturers.push(id);
+		// Re-add the current Student to all new Courses.
+		for (const newId of newEnrolledCourses) {
+			db.courses[newId].enrolledStudents.push(id);
 		}
+
+		db.students[id] = {...newStudent, id};
 
 		history.replace(reroute);
 	};
@@ -135,8 +138,7 @@ export function CreateEditLecturer({reroute}: any) {
 		setShowModal(false);
 	}
 
-	const courseIds = Object.values(db.course).map(c => c.id);
-	const courseOpts = courseIds.map(cid => <Select.Option key={cid} value={cid}>{cid}</Select.Option>);
+	const enrolledCoursesOpts = Object.values(db.courses).map(c => <Select.Option key={c.id} value={c.id}>{c.id}</Select.Option>);
 
 	return (
 		<>
@@ -145,7 +147,7 @@ export function CreateEditLecturer({reroute}: any) {
 				name="basic"
 				onFinish={onFinish}
 				onFinishFailed={onFinishFailed}
-				initialValues={lecturer}
+				initialValues={student}
 			>
 				<Form.Item
 					label="ID"
@@ -157,29 +159,26 @@ export function CreateEditLecturer({reroute}: any) {
 				<Form.Item
 					label="First Name"
 					name="firstName"
-					rules={[{required: true, message: 'Please input first name'}]}
 				>
 					<Input/>
 				</Form.Item>
-
 				<Form.Item
 					label="Last Name"
 					name="lastName"
-					rules={[{required: true, message: 'Please input last name'}]}
 				>
 					<Input/>
 				</Form.Item>
 
 				<Form.Item
-					label="Courses"
-					name="courses">
+					label="Enrolled Courses"
+					name="enrolledCourses">
 					<Select
 						mode="multiple"
 						allowClear
 						style={{width: '100%'}}
 						placeholder="Please select"
 					>
-						{courseOpts}
+						{enrolledCoursesOpts}
 					</Select>
 				</Form.Item>
 

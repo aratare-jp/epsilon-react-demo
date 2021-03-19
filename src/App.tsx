@@ -1,10 +1,10 @@
 import React from "react";
-import Preferences from "./components/Preferences/Preferences";
+import Preferences from "./components/Preferences";
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
-import Login from "./components/Login/Login";
+import Login from "./components/Login";
 import useToken from "./useToken";
-import NotFound from "./components/NotFound/NotFound";
-import Home from "./components/Home/Home";
+import NotFound from "./components/NotFound";
+import Home from "./components/Home";
 
 export default function App() {
 	const {token, setToken} = useToken();

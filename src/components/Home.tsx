@@ -2,10 +2,11 @@ import {Layout, Menu} from 'antd';
 import {PieChartOutlined, UserOutlined} from '@ant-design/icons';
 import React, {useState} from "react";
 import {Link, Redirect, Route, Switch, useLocation, useRouteMatch} from "react-router-dom";
-import Student from "../Entities/Student/Student";
-import Lecturer from "../Entities/Lecturer/Lecturer";
-import Course from "../Entities/Course/Course";
-import Main from "../Main/Main";
+import Main from "./Main";
+import Student from "./entities/Student";
+import Lecturer from "./entities/Lecturer";
+import Course from "./entities/Course";
+import UpperManager from "./entities/UpperManager";
 
 const {Sider} = Layout;
 const {SubMenu} = Menu;
@@ -48,6 +49,9 @@ export default function Home() {
 						<Menu.Item key={`${url}/entities/course`}>
 							<Link to={`${url}/entities/course`}>Course</Link>
 						</Menu.Item>
+						<Menu.Item key={`${url}/entities/upperManager`}>
+							<Link to={`${url}/entities/upperManager`}>Upper Manager</Link>
+						</Menu.Item>
 					</SubMenu>
 				</Menu>
 			</Sider>
@@ -60,6 +64,9 @@ export default function Home() {
 				</Route>
 				<Route path={`${path}/entities/course`}>
 					<Course/>
+				</Route>
+				<Route path={`${path}/entities/upperManager`}>
+					<UpperManager/>
 				</Route>
 				<Route exact path={path}>
 					<Main/>

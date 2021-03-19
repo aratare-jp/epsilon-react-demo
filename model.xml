@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<model>
+	<entity id="student" name="Student" pluralName="Students">
+		<attribute>First Name</attribute>
+		<attribute>Last Name</attribute>
+	</entity>
+	<entity id="lecturer" name="Lecturer" pluralName="Lecturers">
+		<attribute>First Name</attribute>
+		<attribute>Last Name</attribute>
+	</entity>
+	<entity id="course" name="Course" pluralName="Courses">
+		<attribute>Name</attribute>
+	</entity>
+	<entity id="upper-manager" name="Upper Manager" pluralName="Upper Managers">
+		<attribute>First Name</attribute>
+		<attribute>Last Name</attribute>
+	</entity>
+	<link source="student" sourceCardinality="many" targetName="Enrolled Courses"
+		  target="course" targetCardinality="many" sourceName="Enrolled Students"/>
+	<link source="lecturer" sourceCardinality="many" targetName="Taught Courses"
+		  target="course" targetCardinality="many" sourceName="Lecturers"/>
+	<link source="lecturer" sourceCardinality="many" targetName="Managed Courses"
+		  target="course" targetCardinality="many" sourceName="Managers"/>
+</model>

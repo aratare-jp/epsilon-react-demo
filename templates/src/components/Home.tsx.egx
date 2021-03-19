@@ -1,0 +1,4 @@
+rule Home transform m : t_model {
+	template: 'Home.tsx.egl'
+	target: 'src/components/Home.tsx'
+}

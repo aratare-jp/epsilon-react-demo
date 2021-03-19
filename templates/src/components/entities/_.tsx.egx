@@ -1,0 +1,9 @@
+rule Entities transform entity : t_entity {
+	template: '_.tsx.egl'
+	target {
+		var StringUtils = Native('org.apache.commons.lang3.StringUtils');
+		var tokens = entity.a_name.split(' ').collect(t | t.firstToUpperCase);
+		var name = StringUtils.join(tokens, "");
+		return 'src/components/entities/' + name + '.tsx';
+	}
+}

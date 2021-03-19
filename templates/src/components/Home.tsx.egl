@@ -1,0 +1,75 @@
+[%	var CaseUtils = Native("org.apache.commons.text.CaseUtils"); %]
+import {Layout, Menu} from 'antd';
+import {PieChartOutlined, UserOutlined} from '@ant-design/icons';
+import React, {useState} from "react";
+import {Link, Redirect, Route, Switch, useLocation, useRouteMatch} from "react-router-dom";
+import Main from "./Main";
+[%	for (entity in t_entity) {
+		var pascalCase = CaseUtils.toCamelCase(entity.a_name, true, null); %]
+import [%= pascalCase %] from "./entities/[%= pascalCase %]";
+[%	} %]
+
+const {Sider} = Layout;
+const {SubMenu} = Menu;
+
+export default function Home() {
+	const {path, url} = useRouteMatch();
+	const location = useLocation<Location>();
+	const [collapsed, setCollapsed] = useState<boolean>(false);
+	const [selectedKey, setSelectedKey] = useState<string>(location.pathname);
+
+	const onCollapse = (collapsed: boolean) => {
+		setCollapsed(collapsed);
+	};
+
+	const onMenuClicked = (e: any) => {
+		setSelectedKey(e.key);
+	}
+
+	return (
+		<Layout style={{minHeight: '100vh'}}>
+			<Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+				<div className="logo"/>
+				<Menu
+					theme="dark"
+					defaultSelectedKeys={[selectedKey]}
+					mode="inline"
+					onClick={onMenuClicked}
+					defaultOpenKeys={[`${url}/entities`]}
+				>
+					<Menu.Item key={url} icon={<PieChartOutlined/>}>
+						<Link to={url}>Home</Link>
+					</Menu.Item>
+					<SubMenu key={`${url}/entities`} icon={<UserOutlined/>} title="Entities">
+						[%	for (entity in t_entity) {
+								var camelCase = CaseUtils.toCamelCase(entity.a_name, false, null);
+								var pascalCase = CaseUtils.toCamelCase(entity.a_name, true, null); %]
+						<Menu.Item key={`${url}/entities/[%= camelCase %]`}>
+							<Link to={`${url}/entities/[%= camelCase %]`}>[%= entity.a_name %]</Link>
+						</Menu.Item>
+						[%	} %]
+					</SubMenu>
+				</Menu>
+			</Sider>
+			<Switch>
+				[%	for (entity in t_entity) {
+						var camelCase = CaseUtils.toCamelCase(entity.a_name, false, null);
+						var pascalCase = CaseUtils.toCamelCase(entity.a_name, true, null); %]
+				<Route path={`${path}/entities/[%= camelCase %]`}>
+					<[%= pascalCase %]/>
+				</Route>
+				[%	} %]
+				<Route exact path={path}>
+					<Main/>
+				</Route>
+				<Route path="/"
+					   render={({location}: any) => (
+						   <Redirect to={{
+							   pathname: "/404",
+							   state: {from: location}
+						   }}/>
+					   )}/>
+			</Switch>
+		</Layout>
+	);
+}

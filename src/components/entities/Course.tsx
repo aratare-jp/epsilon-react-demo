@@ -2,8 +2,7 @@ import {Breadcrumb, Button, Form, Input, Layout, Modal, Select, Space, Table} fr
 import React, {useState} from "react";
 import {Link, Redirect, Route, Switch, useHistory, useParams, useRouteMatch} from "react-router-dom";
 import {ColumnType} from "antd/lib/table";
-import {IStudent} from "../../../entities/student/student";
-import {db} from "../../../db";
+import {ICourse, db} from "../../db";
 import * as _ from 'lodash';
 import {v4 as uuidv4} from "uuid";
 
@@ -18,7 +17,7 @@ const tailLayout = {
 	wrapperCol: {offset: 8, span: 16},
 };
 
-export default function Student() {
+export default function Course() {
 	const {path} = useRouteMatch();
 
 	return (
@@ -27,18 +26,18 @@ export default function Student() {
 			<Content style={{margin: '0 16px'}}>
 				<Breadcrumb style={{margin: '16px 0'}}>
 					<Breadcrumb.Item>Entities</Breadcrumb.Item>
-					<Breadcrumb.Item>Student</Breadcrumb.Item>
+					<Breadcrumb.Item>Course</Breadcrumb.Item>
 				</Breadcrumb>
 				<div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
 					<Switch>
 						<Route path={`${path}/create`}>
-							<CreateEditStudent reroute={path}/>
+							<CreateEditCourse reroute={path}/>
 						</Route>
 						<Route path={`${path}/edit/:id`}>
-							<CreateEditStudent reroute={path}/>
+							<CreateEditCourse reroute={path}/>
 						</Route>
 						<Route exact path={path}>
-							<ViewStudent/>
+							<ViewCourse/>
 						</Route>
 						<Route path="/"
 							   render={({location}: any) => (
@@ -55,26 +54,21 @@ export default function Student() {
 	);
 }
 
-export function ViewStudent() {
+export function ViewCourse() {
 	const {path} = useRouteMatch();
 
-	const data: IStudent[] = Object.values(db.student);
+	const data: ICourse[] = Object.values(db.courses);
 
-	const columns: ColumnType<IStudent>[] = [
+	const columns: ColumnType<ICourse>[] = [
 		{
-			title: "First Name",
-			dataIndex: "firstName",
-			key: "firstName",
-		},
-		{
-			title: "Last Name",
-			dataIndex: "lastName",
-			key: "lastName",
+			title: "Name",
+			dataIndex: "name",
+			key: "name"
 		},
 		{
 			title: "Action",
 			key: "action",
-			render: (value: any, record: IStudent, index: number) => {
+			render: (value: any, record: ICourse, index: number) => {
 				return (
 					<Space size="middle">
 						<Link to={`${path}/edit/${record.id}`}>
@@ -94,27 +88,59 @@ export function ViewStudent() {
 	)
 }
 
-export function CreateEditStudent({reroute}: any) {
+export function CreateEditCourse({reroute}: any) {
 	const history = useHistory();
 	const id = useParams<{ id: string }>()?.id || uuidv4();
-	const student = db.student[id] || {id, courses: []};
+	const course = db.courses[id]
+		||	{
+				id,
+				enrolledStudents: [],
+				lecturers: [],
+				managers: [],
+			};
 	const [showModal, setShowModal] = useState<boolean>(false);
 
-	const onFinish = (newStudent: IStudent) => {
-		const oldCourses = student.courses;
-		const newCourses = newStudent.courses;
+	const onFinish = (newCourse: ICourse) => {
+		const oldEnrolledStudents = course.enrolledStudents;
+		const newEnrolledStudents = newCourse.enrolledStudents;
 
-		db.student[id] = {...newStudent, id};
-
-		// Remove the current student from all courses.
-		for (const oldCourse of oldCourses) {
-			_.remove(db.course[oldCourse].students, e => e === id);
+		// Remove the current Course from all Students.
+		for (const oldId of oldEnrolledStudents) {
+			_.remove(db.students[oldId].enrolledCourses, e => e === id);
 		}
 
-		// Re-add the current student to all new courses.
-		for (const newCourse of newCourses) {
-			db.course[newCourse].students.push(id);
+		// Re-add the current Course to all new Students.
+		for (const newId of newEnrolledStudents) {
+			db.students[newId].enrolledCourses.push(id);
 		}
+
+		const oldLecturers = course.lecturers;
+		const newLecturers = newCourse.lecturers;
+
+		// Remove the current Course from all Lecturers.
+		for (const oldId of oldLecturers) {
+			_.remove(db.lecturers[oldId].taughtCourses, e => e === id);
+		}
+
+		// Re-add the current Course to all new Lecturers.
+		for (const newId of newLecturers) {
+			db.lecturers[newId].taughtCourses.push(id);
+		}
+
+		const oldManagers = course.managers;
+		const newManagers = newCourse.managers;
+
+		// Remove the current Course from all Lecturers.
+		for (const oldId of oldManagers) {
+			_.remove(db.lecturers[oldId].managedCourses, e => e === id);
+		}
+
+		// Re-add the current Course to all new Lecturers.
+		for (const newId of newManagers) {
+			db.lecturers[newId].managedCourses.push(id);
+		}
+
+		db.courses[id] = {...newCourse, id};
 
 		history.replace(reroute);
 	};
@@ -135,8 +161,11 @@ export function CreateEditStudent({reroute}: any) {
 		setShowModal(false);
 	}
 
-	const courseIds = Object.values(db.course).map(c => c.id);
-	const courseOpts = courseIds.map(cid => <Select.Option key={cid} value={cid}>{cid}</Select.Option>);
+	const enrolledStudentsOpts = Object.values(db.students).map(c => <Select.Option key={c.id} value={c.id}>{c.id}</Select.Option>);
+
+	const lecturersOpts = Object.values(db.lecturers).map(c => <Select.Option key={c.id} value={c.id}>{c.id}</Select.Option>);
+
+	const managersOpts = Object.values(db.lecturers).map(c => <Select.Option key={c.id} value={c.id}>{c.id}</Select.Option>);
 
 	return (
 		<>
@@ -145,7 +174,7 @@ export function CreateEditStudent({reroute}: any) {
 				name="basic"
 				onFinish={onFinish}
 				onFinishFailed={onFinishFailed}
-				initialValues={student}
+				initialValues={course}
 			>
 				<Form.Item
 					label="ID"
@@ -155,31 +184,48 @@ export function CreateEditStudent({reroute}: any) {
 				</Form.Item>
 
 				<Form.Item
-					label="First Name"
-					name="firstName"
-					rules={[{required: true, message: 'Please input first name'}]}
+					label="Name"
+					name="name"
 				>
 					<Input/>
 				</Form.Item>
 
 				<Form.Item
-					label="Last Name"
-					name="lastName"
-					rules={[{required: true, message: 'Please input last name'}]}
-				>
-					<Input/>
-				</Form.Item>
-
-				<Form.Item
-					label="Courses"
-					name="courses">
+					label="Enrolled Students"
+					name="enrolledStudents">
 					<Select
 						mode="multiple"
 						allowClear
 						style={{width: '100%'}}
 						placeholder="Please select"
 					>
-						{courseOpts}
+						{enrolledStudentsOpts}
+					</Select>
+				</Form.Item>
+
+				<Form.Item
+					label="Lecturers"
+					name="lecturers">
+					<Select
+						mode="multiple"
+						allowClear
+						style={{width: '100%'}}
+						placeholder="Please select"
+					>
+						{lecturersOpts}
+					</Select>
+				</Form.Item>
+
+				<Form.Item
+					label="Managers"
+					name="managers">
+					<Select
+						mode="multiple"
+						allowClear
+						style={{width: '100%'}}
+						placeholder="Please select"
+					>
+						{managersOpts}
 					</Select>
 				</Form.Item>
 

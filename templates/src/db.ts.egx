@@ -1,0 +1,4 @@
+rule Db transform m : t_model {
+	template: 'db.ts.egl'
+	target: 'src/db.ts'
+}
