@@ -4,6 +4,8 @@ import {Link, Redirect, Route, Switch, useHistory, useParams, useRouteMatch} fro
 import {ColumnType} from "antd/lib/table";
 import {IStudent} from "../../../entities/student/student";
 import {db} from "../../../db";
+import * as _ from 'lodash';
+import {v4 as uuidv4} from "uuid";
 
 const {Header, Content, Footer} = Layout;
 
@@ -85,18 +87,35 @@ export function ViewStudent() {
 	]
 
 	return (
-		<Table columns={columns} dataSource={data} rowKey="id"/>
+		<>
+			<Link to={`${path}/create`}><Button>Create</Button></Link>
+			<Table columns={columns} dataSource={data} rowKey="id"/>
+		</>
 	)
 }
 
 export function CreateEditStudent({reroute}: any) {
 	const history = useHistory();
-	const {id} = useParams<{ id: string }>();
-	const student = db.student[id];
+	const id = useParams<{ id: string }>()?.id || uuidv4();
+	const student = db.student[id] || {id, courses: []};
 	const [showModal, setShowModal] = useState<boolean>(false);
 
-	const onFinish = (values: IStudent) => {
-		db.student[id] = {...values, id};
+	const onFinish = (newStudent: IStudent) => {
+		const oldCourses = student.courses;
+		const newCourses = newStudent.courses;
+
+		db.student[id] = {...newStudent, id};
+
+		// Remove the current student from all courses.
+		for (const oldCourse of oldCourses) {
+			_.remove(db.course[oldCourse].students, e => e === id);
+		}
+
+		// Re-add the current student to all new courses.
+		for (const newCourse of newCourses) {
+			db.course[newCourse].students.push(id);
+		}
+
 		history.replace(reroute);
 	};
 
@@ -128,6 +147,13 @@ export function CreateEditStudent({reroute}: any) {
 				onFinishFailed={onFinishFailed}
 				initialValues={student}
 			>
+				<Form.Item
+					label="ID"
+					name="id"
+				>
+					<Input disabled/>
+				</Form.Item>
+
 				<Form.Item
 					label="First Name"
 					name="firstName"

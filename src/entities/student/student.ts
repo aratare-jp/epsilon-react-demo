@@ -3,6 +3,4 @@ export interface IStudent {
 	firstName: string,
 	lastName: string,
 	courses: string[],
-
-	[k: string]: any
 }

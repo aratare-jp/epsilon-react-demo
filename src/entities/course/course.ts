@@ -3,6 +3,4 @@ export interface ICourse {
 	name: string,
 	lecturers: string[],
 	students: string[],
-
-	[k: string]: any
 }

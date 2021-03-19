@@ -43,16 +43,16 @@ export const db: IDB = {
 	lecturer: {
 		'0b169c54-da59-47ae-b2ba-9b486bd94802': {
 			id: '0b169c54-da59-47ae-b2ba-9b486bd94802',
-			firstName: 'foo',
-			lastName: 'bar',
+			firstName: 'John',
+			lastName: 'Smith',
 			courses: [
 				'34d63a8b-5e19-41de-bcc8-f61a19e966cd'
 			]
 		},
 		'eb7dd8c0-efd3-400b-b70a-2a1ccf9a5189': {
 			id: 'eb7dd8c0-efd3-400b-b70a-2a1ccf9a5189',
-			firstName: 'baz',
-			lastName: 'boo',
+			firstName: 'Jane',
+			lastName: 'Doe',
 			courses: [
 				'34d63a8b-5e19-41de-bcc8-f61a19e966cd',
 				'6a354b79-517e-43c7-ab71-99b703844aa7'

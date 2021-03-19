@@ -3,6 +3,4 @@ export interface ILecturer {
 	firstName: string,
 	lastName: string,
 	courses: string[],
-
-	[k: string]: any
 }

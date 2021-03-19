@@ -1,14 +1,13 @@
-import {Breadcrumb, Layout, Menu} from 'antd';
+import {Layout, Menu} from 'antd';
 import {PieChartOutlined, UserOutlined} from '@ant-design/icons';
 import React, {useState} from "react";
-import {Route, Switch, Link, BrowserRouter, useLocation, useRouteMatch, Redirect} from "react-router-dom";
+import {Link, Redirect, Route, Switch, useLocation, useRouteMatch} from "react-router-dom";
 import Student from "../Entities/Student/Student";
 import Lecturer from "../Entities/Lecturer/Lecturer";
 import Course from "../Entities/Course/Course";
 import Main from "../Main/Main";
-import NotFound from "../NotFound/NotFound";
 
-const {Header, Content, Footer, Sider} = Layout;
+const {Sider} = Layout;
 const {SubMenu} = Menu;
 
 export default function Home() {
