@@ -262,13 +262,16 @@ rule Home transform m : t_model {
 - Tại line 2, sử dụng `Home.tsx.egl` làm template chính.
 - Tại line 3, generate file mới vào `src/components/Home.tsx`
 
+TIP: Để ý rằng tuy rule trên loop qua tất cả `model` trong `model.xml`, nhưng chúng ta chỉ có duy nhất một `model`!
+Đây là cách viết template dành cho các file độc lập, nghĩa rằng chúng ta chỉ muốn generate duy nhất một file mà thôi.
+
 IMPORTANT: Mỗi template controller có thể chứa nhiều template, nhưng tốt nhất chỉ nên chứa một template. Nếu không,
 `epsilon-clj` sẽ *_KHÔNG_* hot-reload khi template được chỉnh sửa. Ngoài ra, khi template được phát triển và mở rộng
-hơn, sẽ rất khó để quản lý template.
+hơn, bạn sẽ rất khó để quản lý template một cách hiệu quả.
 
-Để hiểu rõ hơn về template controller, chúng ta sẽ thực hành tại link:#template-controller[phần 5.3].
+NOTE: Để hiểu rõ hơn về template controller, chúng ta sẽ thực hành tại link:#template-controller[phần 5.3].
 
-=== 4.4. Vùng đặc biệt
+=== 4.4. Protected Region
 
 Nếu bạn để ý, những gì chúng ta đã làm ở đây không khác gì những framework khác. Vậy thì `epsilon-clj` có gì đặc biệt?
 
@@ -303,30 +306,31 @@ sẽ generate ra
 
 [source,text,linenums]
 ----
-// protected region Custom code here false begin
+// protected region Custom code here off begin
 // protected region Custom code here end
 ----
 
-Chữ `false` ám chỉ rằng protected region hiện tại "không hoạt động", nghĩa rằng tất cả code nằm giữa hai line trên sẽ
-bị xoá khi generate lại từ đầu. Để kích hoạt, đơn giản đổi từ `false` sang `true`. Ví dụ, nếu chúng ta có
+Chữ `off` ám chỉ rằng protected region hiện tại "không hoạt động", nghĩa rằng tất cả code nằm giữa hai line trên sẽ
+bị xoá khi generate lại từ đầu. Để kích hoạt, đơn giản đổi từ `off` sang `on`. Ví dụ, nếu chúng ta có
 
 [source,text,linenums]
 ----
-// protected region Custom code here true begin
+// protected region Custom code here on begin
 console.log("Hello world!");
 // protected region Custom code here end
 ----
 
-thì `console.log("Hello world!");` sẽ được giữ lại ngay cả khi chúng ta generate lại tất cả. Để có cái nhìn rõ hơn,
-chúng ta sẽ thực hành tại link:#protected-region[phần 5.4].
+thì `console.log("Hello world!");` sẽ được giữ lại ngay cả khi chúng ta generate lại tất cả.
+
+NOTE: Để có cái nhìn rõ hơn, chúng ta sẽ thực hành tại link:#protected-region[phần 5.4].
 
 === 4.5. Tổng kết
 
 Tổng kết lại những gì chúng ta đã biết:
 
 - *_Model_*: Được dùng để mô phỏng một ý tưởng hay vật thể nào đó
-- *_Template_*: Được dùng để tạo ra nhiều vậy thể giống nhau
-- *_Template Controller_*: Được dùng để hướng dẫn `epsilon-clj` generate
+- *_Template_*: Được dùng để tạo ra nhiều vật thể giống nhau
+- *_Template Controller_*: Được dùng để hướng dẫn `epsilon-clj` generate file dựa trên template
 - *_Protected Region_*: Vùng đặc biệt để thêm hoặc bớt thông tin
 
 Bây giờ chúng ta sẽ thực hành sử dụng các concept trên.
@@ -385,6 +389,9 @@ image::images/after-upper-manager.png[]
 
 Để ý sidebar bên trái đã có thêm tuỳ chọn `Upper Manager`:
 
+.Upper Manager
+image::images/upper-manager-table.png[]
+
 Để ý table có 2 cột: `First Name` và `Last Name`, tương tự với 2 attribute nằm trong entity Upper Manager chúng ta vừa thêm vào `model.xml`.
 
 Bạn có thể thử tạo ra một Upper Manager mới bằng cách click vào nút `Create` phía trên table:
@@ -395,6 +402,13 @@ image::images/upper-manager-form.png[]
 Ta có thể thấy trong form có 2 textfield, `First Name` và `LastName`, tương tự với 2 attribute của entity `Upper
 Manager` trong model.
 
+Làm sao chúng ta lại có được 2 cột và 2 textfield như thế này? Thực tế, nếu bạn check `Student`, `Course` hay
+`Lecturer`, tất cả đều khớp với model!
+
+Câu trả lời cho câu hỏi trên là vì template, như bản vẽ xây nhà, chỉ ra hình dáng và cấu trúc của file. V.d. `_.tsx
+.egl` chỉ ra hình dáng và cấu trúc của table và form trên. Sau đó chúng ta sử dụng `model.xml` để thêm vào thông số,
+v.d. `Student` bao gồm 2 attribute, `Course` bao gồm 1 attribute, v.v.
+
 .Câu hỏi
 NOTE: Điều gì sẽ xảy ra nếu bạn thêm vào một attribute mới tên `Age` vào entity `Upper Manager`?
 
@@ -404,6 +418,9 @@ NOTE: Điều gì sẽ xảy ra nếu bạn thêm vào một attribute mới tê
 Sau khi thêm vào attribute `Age`, bạn có thể thấy sau khi reload table có 3 cột và form có 3 textfield. Tuy nhiên,
 nếu để ý kỹ hơn, tất cả textfield trong form đều là "text", nhưng "Age" là một integer. Để sửa form lại cho chính
 xác, chúng ta sẽ chỉnh sửa lại template nhằm phân biệt giữa các type attribute khác nhau.
+
+.`Age` chứa string!!!
+image::images/upper-manager-invalid-age.png[]
 
 Trước tiên, chúng ta phải chỉnh lại model để thêm thông tin về "type" của mỗi attribute. Chúng ta không muốn phải ghi
 `type="string"` cho tất cả attribute, nên `string` sẽ là type mặc định cho mọi attribute và chúng ta sẽ chỉ thay đổi
@@ -419,17 +436,23 @@ type khi cần thiết. Chỉnh lại `model.xml` như sau:
 </entity>
 ----
 
-Sau khi reload, chúng ta sẽ không thấy thay đổi trong form, do template chưa được thay đổi để phân biệt type. Để làm
+Sau khi reload, chúng ta sẽ không thấy thay đổi trong form, do template chưa được thay đổi để sử dụng thông tin chúng
+ta vừa thêm vào.
+
+.`Age` vẫn chứa string sau khi sửa `model.xml`
+image::images/upper-manager-invalid-age.png[]
+
+Để làm
 điều này, chúng ta cần phải chỉnh lại 2 file: `_.tsx.egl` và `db.ts.egl`.
 
 .Cách đặt tên cho template
-NOTE: Dấu gạch chân `_` trong `_.tsx.egl` ám chỉ tên của entity trong model. Ở đây chúng ta có 4 file: `Student.tsx`,
+NOTE: Dấu gạch chân `\_` trong `_.tsx.egl` ám chỉ tên của entity trong model. Ở đây chúng ta có 4 file: `Student.tsx`,
 `Lecturer.tsx`, `Course.tsx` và `UpperManager.tsx`. Ngoài ra chúng ta cũng sử dụng file path tương tự với file chúng
-ta muốn generate. V.d. `Student.tsx` nằm trong `src/components/entities/Student.tsx` và template `_.tsx.egl` nằm
+ta muốn generate. V.d. `Student.tsx` nằm trong `src/components/entities/Student.tsx` và template `\_.tsx.egl` nằm
 trong `src/components/entities/_.tsx.egl`. Điều này sẽ giúp ích bạn rất nhiều khi bạn cần phải tìm template một cách
 nhanh chóng.
 
-Đầu tiên, chúng ta sẽ chỉnh lại `_.tsx.egl`. Bạn có thể tìm code block sau từ line 7 đến 10 trong template:
+Đầu tiên, chúng ta sẽ chỉnh lại `db.ts.egl`. Bạn có thể tìm code block sau từ line 10 đến 13 trong template:
 
 .epsilon-react-demo/templates/src/db.ts.egl
 [source,text]
@@ -440,9 +463,9 @@ nhanh chóng.
 [%	} %]
 ----
 
-Đầu tiên, chúng ta loop qua `c_attribute`, ám chỉ tất cả attribute "children" của entity hiện tại. Sau đó, chúng ta
-dùng `CaseUtils` để format lại tên của attribute. Cuối cùng, chúng ta dùng tên của attribute vừa format để generate ra
-string.
+Trong block này, chúng ta loop qua `c_attribute`, ám chỉ tất cả attribute "children" của entity hiện tại. Sau đó,
+chúng ta dùng `CaseUtils` để format lại tên của attribute. Cuối cùng, chúng ta dùng tên của attribute vừa format để
+generate ra string.
 
 Ví dụ, chúng ta có entity sau:
 
@@ -464,7 +487,7 @@ Khi chạy loop trên với model trên chúng ta sẽ có:
     age: string,
 ----
 
-Để ý, type của tất cả attribute đều là `string`! Chúng ta cần phải thay đổi type để khớp với model.
+Để ý, type của tất cả attribute đều là `string`! Chúng ta cần phải thay đổi template để khớp với model.
 
 Tạo một template mới tên `shared.egl` với nội dung như sau:
 
@@ -498,15 +521,12 @@ Chúng ta cần phải import file này vào đầu template `db.tsx.egl`:
 ...
 ----
 
-Sau đó chúng ta sẽ chỉnh sửa lại loop trên như sau:
+Sau đó chúng ta sẽ chỉnh sửa lại line 13 của `db.ts.egl`:
 
 .epsilon-react-demo/templates/src/db.ts.egl
 [source,text]
 ----
-[%	for (attr in entity.c_attribute) {
-        var attrCamelCase = CaseUtils.toCamelCase(attr.text, false, null); %]
 [%= attrCamelCase %]: [%= attr.getTsType() %],
-[%	} %]
 ----
 
 `db.ts` giữ thông tin type của mọi entity trong React app. Để sử dụng, chúng ta phải update `_.tsx.egl`. Thêm code
@@ -539,19 +559,12 @@ Import `shared.egl` vào đầu `_.tsx.egl`:
 ...
 ----
 
-Tại line 212, thay đổi
+Tại line 261, thay đổi
 
 .epsilon-react-demo/templates/src/components/entities/_.tsx.egl
-[source,text]
+[source,jsx,text]
 ----
-[% for (attr in entity.c_attribute) { %]
-<Form.Item
-    label="[%= attr.text %]"
-    name="[%= CaseUtils.toCamelCase(attr.text, false, null) %]"
->
-    <Input/>
-</Form.Item>
-[% } %]
+<Input/>
 ----
 
 thành
@@ -559,19 +572,12 @@ thành
 .epsilon-react-demo/templates/src/components/entities/_.tsx.egl sau khi đã thay đổi
 [source,text]
 ----
-[% for (attr in entity.c_attribute) { %]
-<Form.Item
-    label="[%= attr.text %]"
-    name="[%= CaseUtils.toCamelCase(attr.text, false, null) %]"
->
-    <Input type="[%= attr.getInputType %]"/>
-</Form.Item>
-[% } %]
+<Input type="[%= attr.getInputType() %]"/>
 ----
 
 Sau khi save lại, trình duyệt sẽ reload và bạn sẽ thấy form nhìn như sau:
 
-.Sau khi đã chỉnh Age
+.`Age` giờ đây chỉ chấp nhận chữ số
 image::images/upper-manager-after-age.png[]
 
 Textfield của `Age` giờ đây chỉ chấp nhận chữ số đúng như chúng ta muốn.
@@ -589,7 +595,7 @@ NOTE: Chúng ta cần phải làm gì để thêm vào type `boolean`?
 
 TIP: Để dễ dàng hơn trong việc tạo template mới, bạn nên tạo file trước khi tạo template. Việc sử dụng và test file
 sẽ giúp rất nhiều khi bạn muốn copy sang template, vì template không có autocompletion hoặc linting, nên sẽ rất dễ
-mắc phải những lỗi vặt không đáng có. Trong phần này, chúng ta sẽ tạo file trước và sau đó template.
+mắc phải những lỗi vặt không đáng có. Trong phần này, chúng ta sẽ tạo file trước và sau đó copy sang template.
 
 Giả sử chúng ta muốn có một webpage để liệt kê và giải thích các entity trong model. Trước tiên, tạo file `docs.tsx`
 với nội dung sau:
@@ -626,7 +632,7 @@ export default function Docs() {
 
 Thay đổi `Home.tsx.egl` để thêm vào component `Docs` mới như sau:
 
-- Tại line 62:
+- Tại line 73:
 
 .epsilon-react-demo/templates/src/components/Home.tsx.egl
 [source,jsx,linenums]
@@ -636,7 +642,7 @@ Thay đổi `Home.tsx.egl` để thêm vào component `Docs` mới như sau:
 </Route>
 ----
 
-- Tại line 51:
+- Tại line 63:
 
 .epsilon-react-demo/templates/src/components/Home.tsx.egl
 [source,jsx,linenums]
@@ -646,7 +652,7 @@ Thay đổi `Home.tsx.egl` để thêm vào component `Docs` mới như sau:
 </Menu.Item>
 ----
 
-- Tại line 10:
+- Tại line 11:
 
 .epsilon-react-demo/templates/src/components/Home.tsx.egl
 [source,ts,linenums]
@@ -659,12 +665,12 @@ Webpage của bạn sẽ nhìn như sau:
 .Webpage Docs
 image::images/docs-pre-template.png[]
 
-Để ý tại line 15 trong `Docs.tsx`, chúng ta có `ul` bao gồm tất cả các entity trong model. Tuy nhiên, vì đây là code
-viết tay, khi model thay đổi chúng ta sẽ phải nhớ và thay đổi tại đây. Việc này rất bất tiện và khả năng cao là bạn
-sẽ quên. Đây là lý do tốt nhất để biến file này thành một template.
+Để ý tại line 14 trong `Docs.tsx`, chúng ta có `ul` bao gồm tất cả các entity trong model. Tuy nhiên, vì đây là code
+viết tay, khi model thay đổi chúng ta thay đổi tại đây. Việc này rất bất tiện và khả năng cao là bạn sẽ quên. Đây là
+lý do tốt nhất để biến file này thành một template.
 
-Đầu tiên, copy và paste `Docs.egl` vào `epsilon-react-demo/templates/src/components` với tên `Docs.tsx.egl`. Sau đó,
-thay đổi từ line 15 đến 20 như sau:
+Đầu tiên, copy và paste `Docs.tsx` vào `epsilon-react-demo/templates/src/components` với tên `Docs.tsx.egl`. Sau đó,
+thay đổi từ line 14 đến 19 như sau:
 
 .epsilon-react-demo/templates/src/components/Docs.tsx.egl
 [source,text,linenums]
@@ -694,26 +700,22 @@ rule Docs transform m : t_model {
 image::images/docs-pre-template.png[]
 
 Mặc dù nhìn không khác biệt so với khi không dùng template, nhưng khi `model.xml` được thay đổi, template
-`Docs.tsx.egl` cũng sẽ thay đổi theo một cách tự động.
+`Docs.tsx.egl` cũng sẽ thay đổi theo một cách tự động. Bạn có thể một entity mới, v.d. `Room`, để kiểm tra xem.
 
 Để tìm hiểu rõ hơn về syntax của EGX, xem thêm https://www.eclipse.org/epsilon/doc/egx/[tại đây].
 
 [[protected-region]]
-=== 5.4. Protected region
+=== 5.4. Protected Region
 
 Giả sử chúng ta muốn thêm vào label cho tất cả entity nhằm dễ nhận biết hơn. Trong phần này, chúng ta sẽ sử dụng
 template `_.tsx.egl`.
 
-Trước tiên thay đổi line 38 của template `_.tsx.egl` như sau:
+Trước tiên thêm vào line 48 của template `_.tsx.egl` như sau:
 
 .epsilon-react-demo/templates/src/components/entities/_.tsx.egl
 [source,text]
 ----
-...
-</Breadcrumb>
 <h1>[%= entity.a_name %]</h1>
-<div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-...
 ----
 
 Sau khi reload, webpage sẽ nhìn như thế này:
@@ -722,42 +724,32 @@ Sau khi reload, webpage sẽ nhìn như thế này:
 image::images/pr-header.png[]
 
 Để ý tất cả entity đều có header này. Nhưng nếu chúng ta muốn thay đổi màu font cho chỉ `Student` thì sao? Chúng ta
-cần protected region để thay đổi màu font. Thay đổi `<h1>[%= entity.a_name %]</h1>` thành
+cần protected region để thay đổi màu font. Tại line 32 của `Student.tsx`, đổi từ `off` sang `on`:
 
-.epsilon-react-demo/templates/src/components/entities/_.tsx.egl
-[source,text]
-----
-{header}
-----
-
-Tại line 29, thêm vào code block sau:
-
-.epsilon-react-demo/templates/src/components/entities/_.tsx.egl
-[source,text]
-----
-[%= startProtected(out, "//", "Custom header here", false, "") %]
-const header = (
-    <h1>[%= entity.a_name %]</h1>
-);
-[%= endProtected(out) %]
-----
-
-Mở `Student.tsx` và đổi `off` thành `on` tại line 23. Sau đó thay đổi `<h1>Student</h1>` thành
-
-.epsilon-react-demo/templates/src/components/entities/_.tsx.egl
+.epsilon-react-demo/src/components/entities/Student.tsx
 [source,jsx,text]
 ----
-// protected region Custom header here on begin
-const header = (
-    <h1 style={{color: "red"}}>Student</h1>
-);
-// protected region Custom header here end
+// protected region Add custom rendering code for Student here on begin
+----
+
+Đổi từ `false` sang `true` nghĩa rằng bạn muốn kích hoạt protected region này. Tại line 41, thay đổi code thành:
+
+.epsilon-react-demo/src/components/entities/Student.tsx
+[source,jsx,text]
+----
+<h1 style={{color: "red"}}>Student</h1>
 ----
 
 Webpage của bạn sẽ nhìn như thế này:
 
 .Sau khi đã thêm code viết tay
 image::images/pr-student.png[]
+
+IMPORTANT: Để ý rằng nếu chúng ta kích hoạt protected region, tất cả nội dung bên trong sẽ được giữ nguyên. Nhưng
+điều này đồng nghĩa với việc nếu bạn update template, file đó sẽ không được update! Vì thế, tốt nhất chúng ta nên giữ
+protected region "nhỏ" và không bao quát tất cả code. Ở đây, bạn có thể tạo một placeholder trong render code của
+`Student.tsx`, v.d. `{header}` và tạo `const header = (<h1 style={{color: "red"}}>Student</h1>);` bên trong một
+protected region khác.
 
 .Câu hỏi
 NOTE: Nếu chúng ta muốn phóng to _tất cả_ header ra, thì chúng ta phải viết code ở đâu?
@@ -771,7 +763,8 @@ NOTE: Nếu chúng ta muốn phóng to chỉ `Upper Manager` header ra, thì ch�
 Chúc mừng bạn đã hoàn thành buổi thực hành này. Tuy nhiên, đây chỉ nhằm giới thiệu bạn với `epsilon-clj` mà thôi. Để
 sử dụng một cách hiệu quả nhất, xem thêm thông tin https://aratare-jp.github.io/epsilon-clj/[tại đây].
 
-Tổng kết lại, bạn đã học qua:
+Tổng kết lại, bạn đã học qua cách sử dụng:
+
 - Model
 - Template
 - Template controller
