@@ -1,0 +1,4 @@
+rule UseToken transform m : t_model {
+	template: 'useToken.ts.egl'
+	target: 'src/useToken.ts'
+}

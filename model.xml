@@ -14,6 +14,7 @@
 	<entity id="upper-manager" name="Upper Manager" pluralName="Upper Managers">
 		<attribute>First Name</attribute>
 		<attribute>Last Name</attribute>
+		<attribute type="integer">Age</attribute>
 	</entity>
 	<link source="student" sourceCardinality="many" targetName="Enrolled Courses"
 		  target="course" targetCardinality="many" sourceName="Enrolled Students"/>

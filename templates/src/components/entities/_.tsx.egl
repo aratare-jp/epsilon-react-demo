@@ -12,261 +12,309 @@ import {I[%= pascalName %], db} from "../../db";
 import * as _ from 'lodash';
 import {v4 as uuidv4} from "uuid";
 
+[%= startProtected(out, "//", "Add custom imports here", false, "") %]
+[%= endProtected(out) %]
+
+[%= startProtected(out, "//", "Add custom code before the component here", false, "") %]
 const {Header, Content, Footer} = Layout;
 
 const layout = {
-	labelCol: {span: 8},
-	wrapperCol: {span: 16},
+    labelCol: {span: 8},
+    wrapperCol: {span: 16},
 };
 
 const tailLayout = {
-	wrapperCol: {offset: 8, span: 16},
+    wrapperCol: {offset: 8, span: 16},
 };
+[%= endProtected(out) %]
 
+// Main component that acts as the "parent" for all other components defined in this file.
 export default function [%= pascalName %]() {
-	const {path} = useRouteMatch();
+    [%= startProtected(out, "//", "Add custom code before the main body of the " + pascalName + " component here", false, "") %]
+    [%= endProtected(out) %]
 
-	return (
-		<Layout className="site-layout">
-			<Header className="site-layout-background" style={{padding: 0}}/>
-			<Content style={{margin: '0 16px'}}>
-				<Breadcrumb style={{margin: '16px 0'}}>
-					<Breadcrumb.Item>Entities</Breadcrumb.Item>
-					<Breadcrumb.Item>[%= pascalName %]</Breadcrumb.Item>
-				</Breadcrumb>
-				<div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-					<Switch>
-						<Route path={`${path}/create`}>
-							<CreateEdit[%= pascalName %] reroute={path}/>
-						</Route>
-						<Route path={`${path}/edit/:id`}>
-							<CreateEdit[%= pascalName %] reroute={path}/>
-						</Route>
-						<Route exact path={path}>
-							<View[%= pascalName %]/>
-						</Route>
-						<Route path="/"
-							   render={({location}: any) => (
-								   <Redirect to={{
-									   pathname: "/404",
-									   state: {from: location}
-								   }}/>
-							   )}/>
-					</Switch>
-				</div>
-			</Content>
-			<Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
-		</Layout>
-	);
+    const {path} = useRouteMatch();
+
+    [%= startProtected(out, "//", "Add custom rendering code for " + pascalName + " here", false, "") %]
+    return (
+        <Layout className="site-layout">
+            <Header className="site-layout-background" style={{padding: 0}}/>
+            <Content style={{margin: '0 16px'}}>
+                <Breadcrumb style={{margin: '16px 0'}}>
+                    <Breadcrumb.Item>Entities</Breadcrumb.Item>
+                    <Breadcrumb.Item>[%= pascalName %]</Breadcrumb.Item>
+                </Breadcrumb>
+                <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+                    <Switch>
+                        <Route path={`${path}/create`}>
+                            <CreateEdit[%= pascalName %] reroute={path}/>
+                        </Route>
+                        <Route path={`${path}/edit/:id`}>
+                            <CreateEdit[%= pascalName %] reroute={path}/>
+                        </Route>
+                        <Route exact path={path}>
+                            <View[%= pascalName %]/>
+                        </Route>
+                        <Route path="/"
+                               render={({location}: any) => (
+                                   <Redirect to={{
+                                       pathname: "/404",
+                                       state: {from: location}
+                                   }}/>
+                               )}/>
+                    </Switch>
+                </div>
+            </Content>
+            <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
+        </Layout>
+    );
+    [%= endProtected(out) %]
 }
 
+// Component to handle displaying all infos about [%= entity.a_name %].
 export function View[%= pascalName %]() {
-	const {path} = useRouteMatch();
+    [%= startProtected(out, "//", "Add custom code before the main body of the View" + pascalName + " component here", false, "") %]
+    [%= endProtected(out) %]
 
-	const data: I[%= pascalName %][] = Object.values(db.[%= pluralCamelCase %]);
+    const {path} = useRouteMatch();
 
-	const columns: ColumnType<I[%= pascalName %]>[] = [
-		[% for (attr in entity.c_attribute) { %]
-		{
-			title: "[%= attr.text %]",
-			dataIndex: "[%= CaseUtils.toCamelCase(attr.text, false, null) %]",
-			key: "[%= CaseUtils.toCamelCase(attr.text, false, null) %]"
-		},
-		[% } %]
-		{
-			title: "Action",
-			key: "action",
-			render: (value: any, record: I[%= pascalName %], index: number) => {
-				return (
-					<Space size="middle">
-						<Link to={`${path}/edit/${record.id}`}>
-							<Button type="primary">Edit</Button>
-						</Link>
-					</Space>
-				)
-			}
-		}
-	]
+    [%= startProtected(out, "//", "Add custom data to be displayed here", false, "") %]
+    const data: I[%= pascalName %][] = Object.values(db.[%= pluralCamelCase %]);
+    [%= endProtected(out) %]
 
-	return (
-		<>
-			<Link to={`${path}/create`}><Button>Create</Button></Link>
-			<Table columns={columns} dataSource={data} rowKey="id"/>
-		</>
-	)
+    [%= startProtected(out, "//", "Add custom columns here", false, "") %]
+    const columns: ColumnType<I[%= pascalName %]>[] = [
+        [% for (attr in entity.c_attribute) { %]
+        {
+            title: "[%= attr.text %]",
+            dataIndex: "[%= CaseUtils.toCamelCase(attr.text, false, null) %]",
+            key: "[%= CaseUtils.toCamelCase(attr.text, false, null) %]"
+        },
+        [% } %]
+        {
+            title: "Action",
+            key: "action",
+            render: (value: any, record: I[%= pascalName %], index: number) => {
+                return (
+                    <Space size="middle">
+                        <Link to={`${path}/edit/${record.id}`}>
+                            <Button type="primary">Edit</Button>
+                        </Link>
+                    </Space>
+                )
+            }
+        }
+    ]
+    [%= endProtected(out) %]
+
+    [%= startProtected(out, "//", "Add custom rendering code for View" + pascalName + " here", false, "") %]
+    return (
+        <>
+            <Link to={`${path}/create`}><Button>Create</Button></Link>
+            <Table columns={columns} dataSource={data} rowKey="id"/>
+        </>
+    )
+    [%= endProtected(out) %]
 }
 
+// Component to handle create and edit form for [%= entity.a_name %].
 export function CreateEdit[%= pascalName %]({reroute}: any) {
-	const history = useHistory();
-	const id = useParams<{ id: string }>()?.id || uuidv4();
-	const [%= camelCase %] = db.[%= pluralCamelCase %][id]
-		||	{
-				id,
-				[% for (link in t_link.all().select(l | l.a_source.equals(entity.a_id))) { %]
-				[%= CaseUtils.toCamelCase(link.a_targetName, false, null) %]: [],
-				[% } %]
-				[% for (link in t_link.all().select(l | l.a_target.equals(entity.a_id))) { %]
-				[%= CaseUtils.toCamelCase(link.a_sourceName, false, null) %]: [],
-				[% } %]
-			};
-	const [showModal, setShowModal] = useState<boolean>(false);
+    [%= startProtected(out, "//", "Add custom code before the main body of the CreateEdit" + pascalName + " component here", false, "") %]
+    [%= endProtected(out) %]
 
-	const onFinish = (new[%= pascalName %]: I[%= pascalName %]) => {
-		[% for (link in t_link.all().select(l | l.a_source.equals(entity.a_id))) {
-			var target = t_entity.all().select(e | e.id.equals(link.a_target)).first();
-			var targetPluralCamelCase = CaseUtils.toCamelCase(target.a_pluralName, false, null);
-			var linkSourcePluralCamelCase = CaseUtils.toCamelCase(link.a_sourceName, false, null);
-			var linkSourcePluralPascalCase = CaseUtils.toCamelCase(link.a_sourceName, true, null);
-			var linkTargetPluralCamelCase = CaseUtils.toCamelCase(link.a_targetName, false, null);
-			var linkTargetPluralPascalCase = CaseUtils.toCamelCase(link.a_targetName, true, null); %]
-		const old[%= linkTargetPluralPascalCase %] = [%= camelCase %].[%= linkTargetPluralCamelCase %];
-		const new[%= linkTargetPluralPascalCase %] = new[%= pascalName %].[%= linkTargetPluralCamelCase %];
+    const history = useHistory();
 
-		// Remove the current [%= entity.a_name %] from all [%= target.a_pluralName %].
-		for (const oldId of old[%= linkTargetPluralPascalCase %]) {
-			_.remove(db.[%= targetPluralCamelCase %][oldId].[%= linkSourcePluralCamelCase %], e => e === id);
-		}
+    [%= startProtected(out, "//", "Add custom id here", false, "") %]
+    const id = useParams<{ id: string }>()?.id || uuidv4();
+    [%= endProtected(out) %]
 
-		// Re-add the current [%= entity.a_name %] to all new [%= target.a_pluralName %].
-		for (const newId of new[%= linkTargetPluralPascalCase %]) {
-			db.[%= targetPluralCamelCase %][newId].[%= linkSourcePluralCamelCase %].push(id);
-		}
+    [%= startProtected(out, "//", "Add custom entity data here", false, "") %]
+    const [%= camelCase %] = db.[%= pluralCamelCase %][id]
+        || {
+            id,
+            [% for (link in t_link.all().select(l | l.a_source.equals(entity.a_id))) { %]
+            [%= CaseUtils.toCamelCase(link.a_targetName, false, null) %]: [],
+            [% } %]
+            [% for (link in t_link.all().select(l | l.a_target.equals(entity.a_id))) { %]
+            [%= CaseUtils.toCamelCase(link.a_sourceName, false, null) %]: [],
+            [% } %]
+        };
+    [%= endProtected(out) %]
 
-		[% } %]
-		[% for (link in t_link.all().select(l | l.a_target.equals(entity.a_id))) {
-			var source = t_entity.all().select(e | e.id.equals(link.a_source)).first();
-			var sourcePluralCamelCase = CaseUtils.toCamelCase(source.a_pluralName, false, null);
-			var linkSourcePluralCamelCase = CaseUtils.toCamelCase(link.a_sourceName, false, null);
-			var linkSourcePluralPascalCase = CaseUtils.toCamelCase(link.a_sourceName, true, null);
-			var linkTargetPluralCamelCase = CaseUtils.toCamelCase(link.a_targetName, false, null);
-			var linkTargetPluralPascalCase = CaseUtils.toCamelCase(link.a_targetName, true, null); %]
-		const old[%= linkSourcePluralPascalCase %] = [%= camelCase %].[%= linkSourcePluralCamelCase %];
-		const new[%= linkSourcePluralPascalCase %] = new[%= pascalName %].[%= linkSourcePluralCamelCase %];
+    const [showModal, setShowModal] = useState<boolean>(false);
 
-		// Remove the current [%= entity.a_name %] from all [%= source.a_pluralName %].
-		for (const oldId of old[%= linkSourcePluralPascalCase %]) {
-			_.remove(db.[%= sourcePluralCamelCase %][oldId].[%= linkTargetPluralCamelCase %], e => e === id);
-		}
+    [%= startProtected(out, "//", "Add custom handler when form is submitted here", false, "") %]
+    const onFinish = (new[%= pascalName %]: I[%= pascalName %]) => {
+        [% for (link in t_link.all().select(l | l.a_source.equals(entity.a_id))) {
+            var target = t_entity.all().select(e | e.id.equals(link.a_target)).first();
+            var targetPluralCamelCase = CaseUtils.toCamelCase(target.a_pluralName, false, null);
+            var linkSourcePluralCamelCase = CaseUtils.toCamelCase(link.a_sourceName, false, null);
+            var linkSourcePluralPascalCase = CaseUtils.toCamelCase(link.a_sourceName, true, null);
+            var linkTargetPluralCamelCase = CaseUtils.toCamelCase(link.a_targetName, false, null);
+            var linkTargetPluralPascalCase = CaseUtils.toCamelCase(link.a_targetName, true, null); %]
+        const old[%= linkTargetPluralPascalCase %] = [%= camelCase %].[%= linkTargetPluralCamelCase %];
+        const new[%= linkTargetPluralPascalCase %] = new[%= pascalName %].[%= linkTargetPluralCamelCase %];
 
-		// Re-add the current [%= entity.a_name %] to all new [%= source.a_pluralName %].
-		for (const newId of new[%= linkSourcePluralPascalCase %]) {
-			db.[%= sourcePluralCamelCase %][newId].[%= linkTargetPluralCamelCase %].push(id);
-		}
+        // Remove the current [%= entity.a_name %] from all [%= target.a_pluralName %].
+        for (const oldId of old[%= linkTargetPluralPascalCase %]) {
+            _.remove(db.[%= targetPluralCamelCase %][oldId].[%= linkSourcePluralCamelCase %], e => e === id);
+        }
 
-		[% } %]
-		db.[%= pluralCamelCase %][id] = {...new[%= pascalName %], id};
+        // Re-add the current [%= entity.a_name %] to all new [%= target.a_pluralName %].
+        for (const newId of new[%= linkTargetPluralPascalCase %]) {
+            db.[%= targetPluralCamelCase %][newId].[%= linkSourcePluralCamelCase %].push(id);
+        }
 
-		history.replace(reroute);
-	};
+        [% } %]
+        [% for (link in t_link.all().select(l | l.a_target.equals(entity.a_id))) {
+            var source = t_entity.all().select(e | e.id.equals(link.a_source)).first();
+            var sourcePluralCamelCase = CaseUtils.toCamelCase(source.a_pluralName, false, null);
+            var linkSourcePluralCamelCase = CaseUtils.toCamelCase(link.a_sourceName, false, null);
+            var linkSourcePluralPascalCase = CaseUtils.toCamelCase(link.a_sourceName, true, null);
+            var linkTargetPluralCamelCase = CaseUtils.toCamelCase(link.a_targetName, false, null);
+            var linkTargetPluralPascalCase = CaseUtils.toCamelCase(link.a_targetName, true, null); %]
+        const old[%= linkSourcePluralPascalCase %] = [%= camelCase %].[%= linkSourcePluralCamelCase %];
+        const new[%= linkSourcePluralPascalCase %] = new[%= pascalName %].[%= linkSourcePluralCamelCase %];
 
-	const onFinishFailed = (errorInfo: any) => {
-		console.log('Failed:', errorInfo);
-	};
+        // Remove the current [%= entity.a_name %] from all [%= source.a_pluralName %].
+        for (const oldId of old[%= linkSourcePluralPascalCase %]) {
+            _.remove(db.[%= sourcePluralCamelCase %][oldId].[%= linkTargetPluralCamelCase %], e => e === id);
+        }
 
-	const onCancel = () => {
-		setShowModal(true);
-	}
+        // Re-add the current [%= entity.a_name %] to all new [%= source.a_pluralName %].
+        for (const newId of new[%= linkSourcePluralPascalCase %]) {
+            db.[%= sourcePluralCamelCase %][newId].[%= linkTargetPluralCamelCase %].push(id);
+        }
 
-	const onModalOk = () => {
-		history.replace(reroute);
-	}
+        [% } %]
+        db.[%= pluralCamelCase %][id] = {...new[%= pascalName %], id};
 
-	const onModalCancel = () => {
-		setShowModal(false);
-	}
+        history.replace(reroute);
+    };
+    [%= endProtected(out) %]
 
-	[% for (link in t_link.all().select(l | l.a_source.equals(entity.a_id))) {
-		var target = t_entity.all().select(e | e.a_id.equals(link.a_target)).first();
-		var targetCamelCase = CaseUtils.toCamelCase(target.a_pluralName, false, null);
-		var linkTargetCamelCase = CaseUtils.toCamelCase(link.a_targetName, false, null); %]
-	const [%= linkTargetCamelCase %]Opts = Object.values(db.[%= targetCamelCase %]).map(c => <Select.Option key={c.id} value={c.id}>{c.id}</Select.Option>);
+    [%= startProtected(out, "//", "Add custom handler when form submission has failed here", false, "") %]
+    const onFinishFailed = (errorInfo: any) => {
+        console.error('Failed:', errorInfo);
+    };
+    [%= endProtected(out) %]
 
-	[% } %]
-	[% for (link in t_link.all().select(l | l.a_target.equals(entity.a_id))) {
-		var source = t_entity.all().select(e | e.a_id.equals(link.a_source)).first();
-		var sourceCamelCase = CaseUtils.toCamelCase(source.a_pluralName, false, null);
-		var linkSourceCamelCase = CaseUtils.toCamelCase(link.a_sourceName, false, null); %]
-	const [%= linkSourceCamelCase %]Opts = Object.values(db.[%= sourceCamelCase %]).map(c => <Select.Option key={c.id} value={c.id}>{c.id}</Select.Option>);
+    [%= startProtected(out, "//", "Add custom handler to handle the user wants to cancel the form here", false, "") %]
+    const onCancel = () => {
+        setShowModal(true);
+    }
+    [%= endProtected(out) %]
 
-	[% } %]
-	return (
-		<>
-			<Form
-				{...layout}
-				name="basic"
-				onFinish={onFinish}
-				onFinishFailed={onFinishFailed}
-				initialValues={[%= camelCase %]}
-			>
-				<Form.Item
-					label="ID"
-					name="id"
-				>
-					<Input disabled/>
-				</Form.Item>
+    [%= startProtected(out, "//", "Add custom code to handle the user does want to cancel the form here here", false, "") %]
+    const onModalOk = () => {
+        history.replace(reroute);
+    }
+    [%= endProtected(out) %]
 
-				[% for (attr in entity.c_attribute) { %]
-				<Form.Item
-					label="[%= attr.text %]"
-					name="[%= CaseUtils.toCamelCase(attr.text, false, null) %]"
-				>
-					<Input/>
-				</Form.Item>
-				[% } %]
+    [%= startProtected(out, "//", "Add custom code to handle when the user wants to get back to the form here", false, "") %]
+    const onModalCancel = () => {
+        setShowModal(false);
+    }
+    [%= endProtected(out) %]
 
-				[%	for (link in t_link.all().select(l | l.a_source.equals(entity.a_id))) {
-						var target = t_entity.all().select(e | e.a_id.equals(link.a_target)).first();
-						var linkTargetCamelCase = CaseUtils.toCamelCase(link.a_targetName, false, null); %]
-				<Form.Item
-					label="[%= link.a_targetName %]"
-					name="[%= linkTargetCamelCase %]">
-					<Select
-						mode="multiple"
-						allowClear
-						style={{width: '100%'}}
-						placeholder="Please select"
-					>
-						{[%= linkTargetCamelCase %]Opts}
-					</Select>
-				</Form.Item>
+    [% for (link in t_link.all().select(l | l.a_source.equals(entity.a_id))) {
+        var target = t_entity.all().select(e | e.a_id.equals(link.a_target)).first();
+        var targetCamelCase = CaseUtils.toCamelCase(target.a_pluralName, false, null);
+        var linkTargetCamelCase = CaseUtils.toCamelCase(link.a_targetName, false, null); %]
+    [%= startProtected(out, "//", "Add custom options to select " + link.a_targetName + " here", false, "") %]
+    const [%= linkTargetCamelCase %]Opts = Object.values(db.[%= targetCamelCase %]).map(c => <Select.Option key={c.id} value={c.id}>{c.id}</Select.Option>);
+    [%= endProtected(out) %]
 
-				[% } %]
-				[%	for (link in t_link.all().select(l | l.a_target.equals(entity.a_id))) {
-						var source = t_entity.all().select(e | e.a_id.equals(link.a_source)).first();
-						var linkSourceCamelCase = CaseUtils.toCamelCase(link.a_sourceName, false, null); %]
-				<Form.Item
-					label="[%= link.a_sourceName %]"
-					name="[%= linkSourceCamelCase %]">
-					<Select
-						mode="multiple"
-						allowClear
-						style={{width: '100%'}}
-						placeholder="Please select"
-					>
-						{[%= linkSourceCamelCase %]Opts}
-					</Select>
-				</Form.Item>
+    [% } %]
+    [% for (link in t_link.all().select(l | l.a_target.equals(entity.a_id))) {
+        var source = t_entity.all().select(e | e.a_id.equals(link.a_source)).first();
+        var sourceCamelCase = CaseUtils.toCamelCase(source.a_pluralName, false, null);
+        var linkSourceCamelCase = CaseUtils.toCamelCase(link.a_sourceName, false, null); %]
+    [%= startProtected(out, "//", "Add custom options to select " + link.a_sourceName + " here", false, "") %]
+    const [%= linkSourceCamelCase %]Opts = Object.values(db.[%= sourceCamelCase %]).map(c => <Select.Option key={c.id} value={c.id}>{c.id}</Select.Option>);
+    [%= endProtected(out) %]
 
-				[% } %]
-				<Form.Item {...tailLayout}>
-					<Button type="primary" htmlType="submit">
-						Save
-					</Button>
-				</Form.Item>
+    [% } %]
+    [%= startProtected(out, "//", "Add custom rendering code for CreateEdit" + pascalName + " component here", false, "") %]
+    return (
+        <>
+            <Form
+                {...layout}
+                name="basic"
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                initialValues={[%= camelCase %]}
+            >
+                <Form.Item
+                    label="ID"
+                    name="id"
+                >
+                    <Input disabled/>
+                </Form.Item>
 
-				<Form.Item {...tailLayout}>
-					<Button onClick={onCancel}>
-						Cancel
-					</Button>
-				</Form.Item>
-			</Form>
-			<Modal
-				title="Cancel?"
-				visible={showModal}
-				onOk={onModalOk}
-				onCancel={onModalCancel}>
-				<p>Do you want to cancel?</p>
-			</Modal>
-		</>
-	)
+                [% for (attr in entity.c_attribute) { %]
+                <Form.Item
+                    label="[%= attr.text %]"
+                    name="[%= CaseUtils.toCamelCase(attr.text, false, null) %]"
+                >
+                    <Input/>
+                </Form.Item>
+                [% } %]
+
+                [%	for (link in t_link.all().select(l | l.a_source.equals(entity.a_id))) {
+                        var target = t_entity.all().select(e | e.a_id.equals(link.a_target)).first();
+                        var linkTargetCamelCase = CaseUtils.toCamelCase(link.a_targetName, false, null); %]
+                <Form.Item
+                    label="[%= link.a_targetName %]"
+                    name="[%= linkTargetCamelCase %]">
+                    <Select
+                        mode="multiple"
+                        allowClear
+                        style={{width: '100%'}}
+                        placeholder="Please select"
+                    >
+                        {[%= linkTargetCamelCase %]Opts}
+                    </Select>
+                </Form.Item>
+
+                [% } %]
+                [%	for (link in t_link.all().select(l | l.a_target.equals(entity.a_id))) {
+                        var source = t_entity.all().select(e | e.a_id.equals(link.a_source)).first();
+                        var linkSourceCamelCase = CaseUtils.toCamelCase(link.a_sourceName, false, null); %]
+                <Form.Item
+                    label="[%= link.a_sourceName %]"
+                    name="[%= linkSourceCamelCase %]">
+                    <Select
+                        mode="multiple"
+                        allowClear
+                        style={{width: '100%'}}
+                        placeholder="Please select"
+                    >
+                        {[%= linkSourceCamelCase %]Opts}
+                    </Select>
+                </Form.Item>
+
+                [% } %]
+                <Form.Item {...tailLayout}>
+                    <Button type="primary" htmlType="submit">
+                        Save
+                    </Button>
+                </Form.Item>
+
+                <Form.Item {...tailLayout}>
+                    <Button onClick={onCancel}>
+                        Cancel
+                    </Button>
+                </Form.Item>
+            </Form>
+            <Modal
+                title="Cancel?"
+                visible={showModal}
+                onOk={onModalOk}
+                onCancel={onModalCancel}>
+                <p>Do you want to cancel?</p>
+            </Modal>
+        </>
+    );
+    [%= endProtected(out) %]
 }

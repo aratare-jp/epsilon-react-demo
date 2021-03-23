@@ -1,0 +1,25 @@
+import {Breadcrumb, Layout} from 'antd';
+
+[%= startProtected(out, "//", "Add custom imports here", false, "") %]
+[%= endProtected(out) %]
+
+const {Header, Content, Footer} = Layout;
+
+export default function Main() {
+    [%= startProtected(out, "//", "Add custom rendering code here", false, "") %]
+    return (
+        <Layout className="site-layout">
+            <Header className="site-layout-background" style={{padding: 0}}/>
+            <Content style={{margin: '0 16px'}}>
+                <Breadcrumb style={{margin: '16px 0'}}>
+                    <Breadcrumb.Item>Home</Breadcrumb.Item>
+                </Breadcrumb>
+                <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+                    <div>Home</div>
+                </div>
+            </Content>
+            <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
+        </Layout>
+    );
+    [%= endProtected(out) %]
+}

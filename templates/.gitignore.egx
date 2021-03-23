@@ -1,0 +1,4 @@
+rule GitIgnore transform m : t_model {
+    template: '.gitignore.egl'
+    target: '.gitignore'
+}

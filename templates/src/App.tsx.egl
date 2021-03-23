@@ -1,0 +1,78 @@
+import React from "react";
+import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import Login from "./components/Login";
+import useToken from "./useToken";
+import NotFound from "./components/NotFound";
+import Home from "./components/Home";
+
+[%= startProtected(out, "//", "Add custom imports here", false, "") %]
+[%= endProtected(out) %]
+
+export default function App() {
+    [%= startProtected(out, "//", "Add custom logic before the body here", false, "") %]
+    [%= endProtected(out) %]
+
+    const {token, setToken} = useToken();
+    const pathname = window.location.pathname;
+
+    // Move to login page only once (prevent endless loop)
+    if (!token && pathname !== "/login") {
+        [%= startProtected(out, "//", "Add custom logic before handling login here", false, "") %]
+        [%= endProtected(out) %]
+
+        const origin = window.location.origin;
+        const search = `?redirect=${pathname}`;
+
+        [%= startProtected(out, "//", "Add custom login handling logic here", false, "") %]
+        const loginHandler = () => {
+            window.location.href = origin + "/login" + search;
+        }
+        [%= endProtected(out) %]
+
+        [%= startProtected(out, "//", "Add custom logic before returning Login page here", false, "") %]
+        [%= endProtected(out) %]
+
+        [%= startProtected(out, "//", "Add custom Login page here", false, "") %]
+        return (
+            <div>
+                <div>You are not authenticated!</div>
+                <button onClick={loginHandler}>Login</button>
+            </div>
+        )
+        [%= endProtected(out) %]
+    } else {
+        [%= startProtected(out, "//", "Add custom App body here", false, "") %]
+        return (
+            <div className="wrapper">
+                <BrowserRouter>
+                    <Switch>
+                        <Route path="/login">
+                            <Login setToken={setToken}/>
+                        </Route>
+                        <Route exact path="/"
+                               render={({location}: any) => (
+                                   <Redirect to={{
+                                       pathname: "/home",
+                                       state: {from: location}
+                                   }}/>
+                               )}/>
+                        <Route path="/home">
+                            <Home/>
+                        </Route>
+                        <Route path="/404">
+                            <NotFound/>
+                        </Route>
+                        <Route path="/"
+                               render={({location}: any) => (
+                                   <Redirect to={{
+                                       pathname: "/404",
+                                       state: {from: "bruh"}
+                                   }}/>
+                               )}/>
+                    </Switch>
+                </BrowserRouter>
+            </div>
+        );
+        [%= endProtected(out) %]
+    }
+}

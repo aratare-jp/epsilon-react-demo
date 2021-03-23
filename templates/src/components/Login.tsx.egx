@@ -1,0 +1,4 @@
+rule Login transform m : t_model {
+	template: 'Login.tsx.egl'
+	target: 'src/components/Login.tsx'
+}

@@ -1,0 +1,4 @@
+rule IndexTSX transform m : t_model {
+	template: 'index.tsx.egl'
+	target: 'src/index.tsx'
+}

@@ -1,0 +1,4 @@
+rule PackageJSON transform m : t_model {
+    template: 'package.json.egl'
+    target: 'package.json'
+}

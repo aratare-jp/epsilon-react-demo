@@ -1,0 +1,4 @@
+rule Main transform m : t_model {
+	template: 'Main.tsx.egl'
+	target: 'src/components/Main.tsx'
+}

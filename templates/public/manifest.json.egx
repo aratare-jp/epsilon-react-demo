@@ -1,0 +1,4 @@
+rule Manifest transform m : t_model {
+    template: 'manifest.json.egl'
+    target: 'public/manifest.html'
+}

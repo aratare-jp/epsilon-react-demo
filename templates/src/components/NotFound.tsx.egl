@@ -1,0 +1,23 @@
+import {useHistory} from "react-router-dom";
+
+[%= startProtected(out, "//", "Add custom imports here", false, "") %]
+[%= endProtected(out) %]
+
+export default function NotFound() {
+    const history = useHistory();
+
+    [%= startProtected(out, "//", "Add custom handler for the back button here", false, "") %]
+    const backHandler = () => {
+        history.goBack();
+    }
+    [%= endProtected(out) %]
+
+    [%= startProtected(out, "//", "Add custom rendering code here", false, "") %]
+    return (
+        <>
+            <h1>Not Found!</h1>
+            <button onClick={backHandler}>Back</button>
+        </>
+    );
+    [%= endProtected(out) %]
+}

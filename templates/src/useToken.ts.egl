@@ -1,0 +1,29 @@
+import {useState} from "react";
+
+[%= startProtected(out, "//", "Add custom imports here", false, "") %]
+[%= endProtected(out) %]
+
+// Function used to handle tokens for login. Here we are using local storage for simplicity.
+export default function useToken() {
+    function getToken() {
+        [%= startProtected(out, "//", "Add custom code for token retrieval here", false, "") %]
+        return localStorage.getItem("token");
+        [%= endProtected(out) %]
+    }
+
+    const [token, setToken] = useState<string | null>(getToken());
+
+    function saveToken(userToken: string) {
+        [%= startProtected(out, "//", "Add custom code for setting token here", false, "") %]
+        localStorage.setItem("token", userToken);
+        setToken(userToken);
+        [%= endProtected(out) %]
+    }
+
+    [%= startProtected(out, "//", "Add custom code before returning the token here", false, "") %]
+    return {
+        setToken: saveToken,
+        token
+    }
+    [%= endProtected(out) %]
+}

@@ -1,39 +1,46 @@
+[%= startProtected(out, "//", "Add custom code before the main file here", false, "") %]
+[%= endProtected(out) %]
+
 [%	var CaseUtils = Native("org.apache.commons.text.CaseUtils"); %]
 [%	for (entity in t_entity) {
-		var camelCase = CaseUtils.toCamelCase(entity.a_name, false, null);
-		var pascalCase = CaseUtils.toCamelCase(entity.a_name, true, null); %]
+        var camelCase = CaseUtils.toCamelCase(entity.a_name, false, null);
+        var pascalCase = CaseUtils.toCamelCase(entity.a_name, true, null); %]
 export interface I[%= pascalCase %] {
-	id: string,
-	[%	for (attr in entity.c_attribute) {
-			var attrCamelCase = CaseUtils.toCamelCase(attr.text, false, null); %]
-	[%= attrCamelCase %]: string,
-	[%	} %]
-	[%	for (link in t_link.all().select(l | l.a_source.equals(entity.a_id))) {
-			var linkTargetCamelCase = CaseUtils.toCamelCase(link.a_targetName, false, null); %]
-	[%= linkTargetCamelCase %]: string[],
-	[%	} %]
-	[%	for (link in t_link.all().select(l | l.a_target.equals(entity.a_id))) {
-			var linkSourceCamelCase = CaseUtils.toCamelCase(link.a_sourceName, false, null); %]
-	[%= linkSourceCamelCase %]: string[],
-	[%	} %]
+    id: string,
+    [%	for (attr in entity.c_attribute) {
+            var attrCamelCase = CaseUtils.toCamelCase(attr.text, false, null); %]
+    [%= attrCamelCase %]: string,
+    [%	} %]
+    [%	for (link in t_link.all().select(l | l.a_source.equals(entity.a_id))) {
+            var linkTargetCamelCase = CaseUtils.toCamelCase(link.a_targetName, false, null); %]
+    [%= linkTargetCamelCase %]: string[],
+    [%	} %]
+    [%	for (link in t_link.all().select(l | l.a_target.equals(entity.a_id))) {
+            var linkSourceCamelCase = CaseUtils.toCamelCase(link.a_sourceName, false, null); %]
+    [%= linkSourceCamelCase %]: string[],
+    [%	} %]
+    [%= startProtected(out, "//", "Add custom fields for " + entity.a_name + " here", false, "") %]
+    [%= endProtected(out) %]
 }
 
 [%	} %]
 export interface IDB {
-	[%	for (entity in t_entity) {
-		var camelCase = CaseUtils.toCamelCase(entity.a_pluralName, false, null);
-		var pascalCase = CaseUtils.toCamelCase(entity.a_name, true, null); %]
-	[%= camelCase %]: { [id: string]: I[%= pascalCase %] },
-	[%	} %]
+    [%	for (entity in t_entity) {
+        var camelCase = CaseUtils.toCamelCase(entity.a_pluralName, false, null);
+        var pascalCase = CaseUtils.toCamelCase(entity.a_name, true, null); %]
+    [%= camelCase %]: { [id: string]: I[%= pascalCase %] },
+    [%	} %]
+    [%= startProtected(out, "//", "Add custom fields for IDB here", false, "") %]
+    [%= endProtected(out) %]
 }
 
 export const db: IDB = {
-	[%	for (entity in t_entity) {
-		var camelCase = CaseUtils.toCamelCase(entity.a_pluralName, false, null);
-		var pascalCase = CaseUtils.toCamelCase(entity.a_pluralName, true, null); %]
-	[%= camelCase %]: {
-		[%= startProtected(out, "//", "Custom data here for " + entity.a_name, false, "") %]
-		[%= endProtected(out) %]
-	},
-	[%	} %]
+    [%	for (entity in t_entity) {
+        var camelCase = CaseUtils.toCamelCase(entity.a_pluralName, false, null);
+        var pascalCase = CaseUtils.toCamelCase(entity.a_pluralName, true, null); %]
+    [%= camelCase %]: {
+        [%= startProtected(out, "//", "Custom data here for " + entity.a_name, false, "") %]
+        [%= endProtected(out) %]
+    },
+    [%	} %]
 }

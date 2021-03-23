@@ -1,0 +1,4 @@
+rule AppTSX transform m : t_model {
+	template: 'app.tsx.egl'
+	target: 'src/App.tsx'
+}

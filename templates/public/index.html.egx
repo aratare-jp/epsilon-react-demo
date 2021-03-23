@@ -1,0 +1,4 @@
+rule Index transform m : t_model {
+    template: 'index.html.egl'
+    target: 'public/index.html'
+}

@@ -1,0 +1,74 @@
+import React from 'react';
+import {useHistory, useLocation} from "react-router-dom";
+import * as queryString from 'query-string';
+import {Button, Form, Input,} from "antd";
+
+[%= startProtected(out, "//", "Add custom imports here", false, "") %]
+[%= endProtected(out) %]
+
+[%= startProtected(out, "//", "Add custom code before the component here", false, "") %]
+const layout = {
+    labelCol: {span: 8},
+    wrapperCol: {span: 16},
+};
+
+const tailLayout = {
+    wrapperCol: {offset: 8, span: 16},
+};
+[%= endProtected(out) %]
+
+export default function Login({setToken}: { setToken: (token: string) => void }) {
+    [%= startProtected(out, "//", "Add custom code before the main body of the component here", false, "") %]
+    [%= endProtected(out) %]
+
+    const history = useHistory();
+    const location = useLocation<Location>();
+    const params = queryString.parse(location.search);
+    const redirect = params["redirect"] as string || "/";
+
+    [%= startProtected(out, "//", "Add custom handler when submitting login form here", false, "") %]
+    const onFinish = (values: { username: string, password: string }) => {
+        setToken("test123");
+        history.replace(redirect);
+    };
+    [%= endProtected(out) %]
+
+    [%= startProtected(out, "//", "Add custom handler when form submission has failed here", false, "") %]
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
+    };
+    [%= endProtected(out) %]
+
+    [%= startProtected(out, "//", "Add custom rendering code here", false, "") %]
+    return (
+        <Form
+            {...layout}
+            name="basic"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+        >
+            <Form.Item
+                label="Username"
+                name="username"
+                rules={[{required: true, message: 'Please input your username!'}]}
+            >
+                <Input/>
+            </Form.Item>
+
+            <Form.Item
+                label="Password"
+                name="password"
+                rules={[{required: true, message: 'Please input your password!'}]}
+            >
+                <Input.Password/>
+            </Form.Item>
+
+            <Form.Item {...tailLayout}>
+                <Button type="primary" htmlType="submit">
+                    Login
+                </Button>
+            </Form.Item>
+        </Form>
+    );
+    [%= endProtected(out) %]
+}

@@ -1,0 +1,4 @@
+rule NotFound transform m : t_model {
+	template: 'NotFound.tsx.egl'
+	target: 'src/components/NotFound.tsx'
+}

@@ -1,0 +1,4 @@
+rule ReportWebVitals transform m : t_model {
+	template: 'reportWebVitals.ts.egl'
+	target: 'src/reportWebVitals.ts'
+}

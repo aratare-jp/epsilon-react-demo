@@ -1,0 +1,4 @@
+rule TSConfig transform m : t_model {
+    template: 'tsconfig.json.egl'
+    target: 'tsconfig.json'
+}
