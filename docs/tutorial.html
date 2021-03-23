@@ -538,7 +538,7 @@ pre.pygments .tok-il { color: #666666 } /* Literal.Number.Integer.Long */
 <li><a href="#_4_1_model">4.1. Model</a></li>
 <li><a href="#_4_2_template">4.2. Template</a></li>
 <li><a href="#_4_3_template_controller">4.3. Template Controller</a></li>
-<li><a href="#_4_4_vùng_đặc_biệt">4.4. Vùng đặc biệt</a></li>
+<li><a href="#_4_4_protected_region">4.4. Protected Region</a></li>
 <li><a href="#_4_5_tổng_kết">4.5. Tổng kết</a></li>
 </ul>
 </li>
@@ -547,7 +547,7 @@ pre.pygments .tok-il { color: #666666 } /* Literal.Number.Integer.Long */
 <li><a href="#model">5.1. Model</a></li>
 <li><a href="#template">5.2. Template</a></li>
 <li><a href="#template-controller">5.3. Template controller</a></li>
-<li><a href="#protected-region">5.4. Protected region</a></li>
+<li><a href="#protected-region">5.4. Protected Region</a></li>
 </ul>
 </li>
 <li><a href="#_6_tổng_kết">6. Tổng kết</a></li>
@@ -985,6 +985,19 @@ Chúng ta cũng có thể xem qua <code>epsilon-react-demo/templates/src/compone
 </li>
 </ul>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Để ý rằng tuy rule trên loop qua tất cả <code>model</code> trong <code>model.xml</code>, nhưng chúng ta chỉ có duy nhất một <code>model</code>!
+Đây là cách viết template dành cho các file độc lập, nghĩa rằng chúng ta chỉ muốn generate duy nhất một file mà thôi.
+</td>
+</tr>
+</table>
+</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -994,17 +1007,26 @@ Chúng ta cũng có thể xem qua <code>epsilon-react-demo/templates/src/compone
 <td class="content">
 Mỗi template controller có thể chứa nhiều template, nhưng tốt nhất chỉ nên chứa một template. Nếu không,
 <code>epsilon-clj</code> sẽ <strong><em>KHÔNG</em></strong> hot-reload khi template được chỉnh sửa. Ngoài ra, khi template được phát triển và mở rộng
-hơn, sẽ rất khó để quản lý template.
+hơn, bạn sẽ rất khó để quản lý template một cách hiệu quả.
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>Để hiểu rõ hơn về template controller, chúng ta sẽ thực hành tại <a href="#template-controller">phần 5.3</a>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Để hiểu rõ hơn về template controller, chúng ta sẽ thực hành tại <a href="#template-controller">phần 5.3</a>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_4_4_vùng_đặc_biệt">4.4. Vùng đặc biệt</h3>
+<h3 id="_4_4_protected_region">4.4. Protected Region</h3>
 <div class="paragraph">
 <p>Nếu bạn để ý, những gì chúng ta đã làm ở đây không khác gì những framework khác. Vậy thì <code>epsilon-clj</code> có gì đặc biệt?</p>
 </div>
@@ -1052,28 +1074,39 @@ template nơi thông tin có thể được thêm hoặc bớt tuỳ thích, vì
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="text"><table class="linenotable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><pre><span></span>// protected region Custom code here false begin
+<span class="normal">2</span></pre></div></td><td class="code"><pre><span></span>// protected region Custom code here off begin
 // protected region Custom code here end
 </pre></td></tr></table></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Chữ <code>false</code> ám chỉ rằng protected region hiện tại "không hoạt động", nghĩa rằng tất cả code nằm giữa hai line trên sẽ
-bị xoá khi generate lại từ đầu. Để kích hoạt, đơn giản đổi từ <code>false</code> sang <code>true</code>. Ví dụ, nếu chúng ta có</p>
+<p>Chữ <code>off</code> ám chỉ rằng protected region hiện tại "không hoạt động", nghĩa rằng tất cả code nằm giữa hai line trên sẽ
+bị xoá khi generate lại từ đầu. Để kích hoạt, đơn giản đổi từ <code>off</code> sang <code>on</code>. Ví dụ, nếu chúng ta có</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="text"><table class="linenotable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><pre><span></span>// protected region Custom code here true begin
+<span class="normal">3</span></pre></div></td><td class="code"><pre><span></span>// protected region Custom code here on begin
 console.log(&quot;Hello world!&quot;);
 // protected region Custom code here end
 </pre></td></tr></table></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>thì <code>console.log("Hello world!");</code> sẽ được giữ lại ngay cả khi chúng ta generate lại tất cả. Để có cái nhìn rõ hơn,
-chúng ta sẽ thực hành tại <a href="#protected-region">phần 5.4</a>.</p>
+<p>thì <code>console.log("Hello world!");</code> sẽ được giữ lại ngay cả khi chúng ta generate lại tất cả.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Để có cái nhìn rõ hơn, chúng ta sẽ thực hành tại <a href="#protected-region">phần 5.4</a>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -1087,10 +1120,10 @@ chúng ta sẽ thực hành tại <a href="#protected-region">phần 5.4</a>.</p
 <p><strong><em>Model</em></strong>: Được dùng để mô phỏng một ý tưởng hay vật thể nào đó</p>
 </li>
 <li>
-<p><strong><em>Template</em></strong>: Được dùng để tạo ra nhiều vậy thể giống nhau</p>
+<p><strong><em>Template</em></strong>: Được dùng để tạo ra nhiều vật thể giống nhau</p>
 </li>
 <li>
-<p><strong><em>Template Controller</em></strong>: Được dùng để hướng dẫn <code>epsilon-clj</code> generate</p>
+<p><strong><em>Template Controller</em></strong>: Được dùng để hướng dẫn <code>epsilon-clj</code> generate file dựa trên template</p>
 </li>
 <li>
 <p><strong><em>Protected Region</em></strong>: Vùng đặc biệt để thêm hoặc bớt thông tin</p>
@@ -1192,6 +1225,12 @@ chúng ta sẽ thực hành tại <a href="#protected-region">phần 5.4</a>.</p
 <div class="paragraph">
 <p>Để ý sidebar bên trái đã có thêm tuỳ chọn <code>Upper Manager</code>:</p>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="images/upper-manager-table.png" alt="upper manager table">
+</div>
+<div class="title">Figure 4. Upper Manager</div>
+</div>
 <div class="paragraph">
 <p>Để ý table có 2 cột: <code>First Name</code> và <code>Last Name</code>, tương tự với 2 attribute nằm trong entity Upper Manager chúng ta vừa thêm vào <code>model.xml</code>.</p>
 </div>
@@ -1202,11 +1241,20 @@ chúng ta sẽ thực hành tại <a href="#protected-region">phần 5.4</a>.</p
 <div class="content">
 <img src="images/upper-manager-form.png" alt="upper manager form">
 </div>
-<div class="title">Figure 4. Form add Upper Manager</div>
+<div class="title">Figure 5. Form add Upper Manager</div>
 </div>
 <div class="paragraph">
 <p>Ta có thể thấy trong form có 2 textfield, <code>First Name</code> và <code>LastName</code>, tương tự với 2 attribute của entity <code>Upper
 Manager</code> trong model.</p>
+</div>
+<div class="paragraph">
+<p>Làm sao chúng ta lại có được 2 cột và 2 textfield như thế này? Thực tế, nếu bạn check <code>Student</code>, <code>Course</code> hay
+<code>Lecturer</code>, tất cả đều khớp với model!</p>
+</div>
+<div class="paragraph">
+<p>Câu trả lời cho câu hỏi trên là vì template, như bản vẽ xây nhà, chỉ ra hình dáng và cấu trúc của file. V.d. <code>_.tsx
+.egl</code> chỉ ra hình dáng và cấu trúc của table và form trên. Sau đó chúng ta sử dụng <code>model.xml</code> để thêm vào thông số,
+v.d. <code>Student</code> bao gồm 2 attribute, <code>Course</code> bao gồm 1 attribute, v.v.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1229,6 +1277,12 @@ Manager</code> trong model.</p>
 nếu để ý kỹ hơn, tất cả textfield trong form đều là "text", nhưng "Age" là một integer. Để sửa form lại cho chính
 xác, chúng ta sẽ chỉnh sửa lại template nhằm phân biệt giữa các type attribute khác nhau.</p>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="images/upper-manager-invalid-age.png" alt="upper manager invalid age">
+</div>
+<div class="title">Figure 6. <code>Age</code> chứa string!!!</div>
+</div>
 <div class="paragraph">
 <p>Trước tiên, chúng ta phải chỉnh lại model để thêm thông tin về "type" của mỗi attribute. Chúng ta không muốn phải ghi
 <code>type="string"</code> cho tất cả attribute, nên <code>string</code> sẽ là type mặc định cho mọi attribute và chúng ta sẽ chỉ thay đổi
@@ -1250,7 +1304,17 @@ type khi cần thiết. Chỉnh lại <code>model.xml</code> như sau:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Sau khi reload, chúng ta sẽ không thấy thay đổi trong form, do template chưa được thay đổi để phân biệt type. Để làm
+<p>Sau khi reload, chúng ta sẽ không thấy thay đổi trong form, do template chưa được thay đổi để sử dụng thông tin chúng
+ta vừa thêm vào.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/upper-manager-invalid-age.png" alt="upper manager invalid age">
+</div>
+<div class="title">Figure 7. <code>Age</code> vẫn chứa string sau khi sửa <code>model.xml</code></div>
+</div>
+<div class="paragraph">
+<p>Để làm
 điều này, chúng ta cần phải chỉnh lại 2 file: <code>_.tsx.egl</code> và <code>db.ts.egl</code>.</p>
 </div>
 <div class="admonitionblock note">
@@ -1261,17 +1325,17 @@ type khi cần thiết. Chỉnh lại <code>model.xml</code> như sau:</p>
 </td>
 <td class="content">
 <div class="title">Cách đặt tên cho template</div>
-Dấu gạch chân <code><em></code> trong <code></em>.tsx.egl</code> ám chỉ tên của entity trong model. Ở đây chúng ta có 4 file: <code>Student.tsx</code>,
+Dấu gạch chân <code>_</code> trong <code>_.tsx.egl</code> ám chỉ tên của entity trong model. Ở đây chúng ta có 4 file: <code>Student.tsx</code>,
 <code>Lecturer.tsx</code>, <code>Course.tsx</code> và <code>UpperManager.tsx</code>. Ngoài ra chúng ta cũng sử dụng file path tương tự với file chúng
-ta muốn generate. V.d. <code>Student.tsx</code> nằm trong <code>src/components/entities/Student.tsx</code> và template <code><em>.tsx.egl</code> nằm
-trong <code>src/components/entities/</em>.tsx.egl</code>. Điều này sẽ giúp ích bạn rất nhiều khi bạn cần phải tìm template một cách
+ta muốn generate. V.d. <code>Student.tsx</code> nằm trong <code>src/components/entities/Student.tsx</code> và template <code>_.tsx.egl</code> nằm
+trong <code>src/components/entities/_.tsx.egl</code>. Điều này sẽ giúp ích bạn rất nhiều khi bạn cần phải tìm template một cách
 nhanh chóng.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Đầu tiên, chúng ta sẽ chỉnh lại <code>_.tsx.egl</code>. Bạn có thể tìm code block sau từ line 7 đến 10 trong template:</p>
+<p>Đầu tiên, chúng ta sẽ chỉnh lại <code>db.ts.egl</code>. Bạn có thể tìm code block sau từ line 10 đến 13 trong template:</p>
 </div>
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/db.ts.egl</div>
@@ -1283,9 +1347,9 @@ nhanh chóng.
 </div>
 </div>
 <div class="paragraph">
-<p>Đầu tiên, chúng ta loop qua <code>c_attribute</code>, ám chỉ tất cả attribute "children" của entity hiện tại. Sau đó, chúng ta
-dùng <code>CaseUtils</code> để format lại tên của attribute. Cuối cùng, chúng ta dùng tên của attribute vừa format để generate ra
-string.</p>
+<p>Trong block này, chúng ta loop qua <code>c_attribute</code>, ám chỉ tất cả attribute "children" của entity hiện tại. Sau đó,
+chúng ta dùng <code>CaseUtils</code> để format lại tên của attribute. Cuối cùng, chúng ta dùng tên của attribute vừa format để
+generate ra string.</p>
 </div>
 <div class="paragraph">
 <p>Ví dụ, chúng ta có entity sau:</p>
@@ -1318,7 +1382,7 @@ string.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Để ý, type của tất cả attribute đều là <code>string</code>! Chúng ta cần phải thay đổi type để khớp với model.</p>
+<p>Để ý, type của tất cả attribute đều là <code>string</code>! Chúng ta cần phải thay đổi template để khớp với model.</p>
 </div>
 <div class="paragraph">
 <p>Tạo một template mới tên <code>shared.egl</code> với nội dung như sau:</p>
@@ -1368,15 +1432,12 @@ TS type dựa trên type của attribute đó.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Sau đó chúng ta sẽ chỉnh sửa lại loop trên như sau:</p>
+<p>Sau đó chúng ta sẽ chỉnh sửa lại line 13 của <code>db.ts.egl</code>:</p>
 </div>
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/db.ts.egl</div>
 <div class="content">
-<pre class="pygments highlight"><code data-lang="text"><span></span>[%	for (attr in entity.c_attribute) {
-        var attrCamelCase = CaseUtils.toCamelCase(attr.text, false, null); %]
-[%= attrCamelCase %]: [%= attr.getTsType() %],
-[%	} %]</code></pre>
+<pre class="pygments highlight"><code data-lang="text"><span></span>[%= attrCamelCase %]: [%= attr.getTsType() %],</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1425,19 +1486,13 @@ operation t_attribute getInputType(): String {
 </div>
 </div>
 <div class="paragraph">
-<p>Tại line 212, thay đổi</p>
+<p>Tại line 261, thay đổi</p>
 </div>
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/components/entities/_.tsx.egl</div>
 <div class="content">
-<pre class="pygments highlight"><code data-lang="text"><span></span>[% for (attr in entity.c_attribute) { %]
-&lt;Form.Item
-    label=&quot;[%= attr.text %]&quot;
-    name=&quot;[%= CaseUtils.toCamelCase(attr.text, false, null) %]&quot;
-&gt;
-    &lt;Input/&gt;
-&lt;/Form.Item&gt;
-[% } %]</code></pre>
+<pre class="pygments highlight"><code data-lang="jsx"><table class="linenotable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><pre><span></span>&lt;Input/&gt;
+</pre></td></tr></table></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1446,14 +1501,7 @@ operation t_attribute getInputType(): String {
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/components/entities/_.tsx.egl sau khi đã thay đổi</div>
 <div class="content">
-<pre class="pygments highlight"><code data-lang="text"><span></span>[% for (attr in entity.c_attribute) { %]
-&lt;Form.Item
-    label=&quot;[%= attr.text %]&quot;
-    name=&quot;[%= CaseUtils.toCamelCase(attr.text, false, null) %]&quot;
-&gt;
-    &lt;Input type=&quot;[%= attr.getInputType %]&quot;/&gt;
-&lt;/Form.Item&gt;
-[% } %]</code></pre>
+<pre class="pygments highlight"><code data-lang="text"><span></span>&lt;Input type=&quot;[%= attr.getInputType() %]&quot;/&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1463,7 +1511,7 @@ operation t_attribute getInputType(): String {
 <div class="content">
 <img src="images/upper-manager-after-age.png" alt="upper manager after age">
 </div>
-<div class="title">Figure 5. Sau khi đã chỉnh Age</div>
+<div class="title">Figure 8. <code>Age</code> giờ đây chỉ chấp nhận chữ số</div>
 </div>
 <div class="paragraph">
 <p>Textfield của <code>Age</code> giờ đây chỉ chấp nhận chữ số đúng như chúng ta muốn.</p>
@@ -1509,7 +1557,7 @@ Chúng ta cần phải làm gì để thêm vào type <code>boolean</code>?
 <td class="content">
 Để dễ dàng hơn trong việc tạo template mới, bạn nên tạo file trước khi tạo template. Việc sử dụng và test file
 sẽ giúp rất nhiều khi bạn muốn copy sang template, vì template không có autocompletion hoặc linting, nên sẽ rất dễ
-mắc phải những lỗi vặt không đáng có. Trong phần này, chúng ta sẽ tạo file trước và sau đó template.
+mắc phải những lỗi vặt không đáng có. Trong phần này, chúng ta sẽ tạo file trước và sau đó copy sang template.
 </td>
 </tr>
 </table>
@@ -1579,7 +1627,7 @@ export default function Docs() {
 <div class="ulist">
 <ul>
 <li>
-<p>Tại line 62:</p>
+<p>Tại line 73:</p>
 </li>
 </ul>
 </div>
@@ -1597,7 +1645,7 @@ export default function Docs() {
 <div class="ulist">
 <ul>
 <li>
-<p>Tại line 51:</p>
+<p>Tại line 63:</p>
 </li>
 </ul>
 </div>
@@ -1615,7 +1663,7 @@ export default function Docs() {
 <div class="ulist">
 <ul>
 <li>
-<p>Tại line 10:</p>
+<p>Tại line 11:</p>
 </li>
 </ul>
 </div>
@@ -1633,16 +1681,16 @@ export default function Docs() {
 <div class="content">
 <img src="images/docs-pre-template.png" alt="docs pre template">
 </div>
-<div class="title">Figure 6. Webpage Docs</div>
+<div class="title">Figure 9. Webpage Docs</div>
 </div>
 <div class="paragraph">
-<p>Để ý tại line 15 trong <code>Docs.tsx</code>, chúng ta có <code>ul</code> bao gồm tất cả các entity trong model. Tuy nhiên, vì đây là code
-viết tay, khi model thay đổi chúng ta sẽ phải nhớ và thay đổi tại đây. Việc này rất bất tiện và khả năng cao là bạn
-sẽ quên. Đây là lý do tốt nhất để biến file này thành một template.</p>
+<p>Để ý tại line 14 trong <code>Docs.tsx</code>, chúng ta có <code>ul</code> bao gồm tất cả các entity trong model. Tuy nhiên, vì đây là code
+viết tay, khi model thay đổi chúng ta thay đổi tại đây. Việc này rất bất tiện và khả năng cao là bạn sẽ quên. Đây là
+lý do tốt nhất để biến file này thành một template.</p>
 </div>
 <div class="paragraph">
-<p>Đầu tiên, copy và paste <code>Docs.egl</code> vào <code>epsilon-react-demo/templates/src/components</code> với tên <code>Docs.tsx.egl</code>. Sau đó,
-thay đổi từ line 15 đến 20 như sau:</p>
+<p>Đầu tiên, copy và paste <code>Docs.tsx</code> vào <code>epsilon-react-demo/templates/src/components</code> với tên <code>Docs.tsx.egl</code>. Sau đó,
+thay đổi từ line 14 đến 19 như sau:</p>
 </div>
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/components/Docs.tsx.egl</div>
@@ -1683,33 +1731,29 @@ với nội dung sau:</p>
 <div class="content">
 <img src="images/docs-pre-template.png" alt="docs pre template">
 </div>
-<div class="title">Figure 7. Webpage Docs sau khi chuyển sang template</div>
+<div class="title">Figure 10. Webpage Docs sau khi chuyển sang template</div>
 </div>
 <div class="paragraph">
 <p>Mặc dù nhìn không khác biệt so với khi không dùng template, nhưng khi <code>model.xml</code> được thay đổi, template
-<code>Docs.tsx.egl</code> cũng sẽ thay đổi theo một cách tự động.</p>
+<code>Docs.tsx.egl</code> cũng sẽ thay đổi theo một cách tự động. Bạn có thể một entity mới, v.d. <code>Room</code>, để kiểm tra xem.</p>
 </div>
 <div class="paragraph">
 <p>Để tìm hiểu rõ hơn về syntax của EGX, xem thêm <a href="https://www.eclipse.org/epsilon/doc/egx/">tại đây</a>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="protected-region">5.4. Protected region</h3>
+<h3 id="protected-region">5.4. Protected Region</h3>
 <div class="paragraph">
 <p>Giả sử chúng ta muốn thêm vào label cho tất cả entity nhằm dễ nhận biết hơn. Trong phần này, chúng ta sẽ sử dụng
 template <code>_.tsx.egl</code>.</p>
 </div>
 <div class="paragraph">
-<p>Trước tiên thay đổi line 38 của template <code>_.tsx.egl</code> như sau:</p>
+<p>Trước tiên thêm vào line 48 của template <code>_.tsx.egl</code> như sau:</p>
 </div>
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/components/entities/_.tsx.egl</div>
 <div class="content">
-<pre class="pygments highlight"><code data-lang="text"><span></span>...
-&lt;/Breadcrumb&gt;
-&lt;h1&gt;[%= entity.a_name %]&lt;/h1&gt;
-&lt;div className=&quot;site-layout-background&quot; style={{padding: 24, minHeight: 360}}&gt;
-...</code></pre>
+<pre class="pygments highlight"><code data-lang="text"><span></span>&lt;h1&gt;[%= entity.a_name %]&lt;/h1&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1719,46 +1763,26 @@ template <code>_.tsx.egl</code>.</p>
 <div class="content">
 <img src="images/pr-header.png" alt="pr header">
 </div>
-<div class="title">Figure 8. Sau khi đã add header</div>
+<div class="title">Figure 11. Sau khi đã add header</div>
 </div>
 <div class="paragraph">
 <p>Để ý tất cả entity đều có header này. Nhưng nếu chúng ta muốn thay đổi màu font cho chỉ <code>Student</code> thì sao? Chúng ta
-cần protected region để thay đổi màu font. Thay đổi <code>&lt;h1&gt;[%= entity.a_name %]&lt;/h1&gt;</code> thành</p>
+cần protected region để thay đổi màu font. Tại line 32 của <code>Student.tsx</code>, đổi từ <code>off</code> sang <code>on</code>:</p>
 </div>
 <div class="listingblock">
-<div class="title">epsilon-react-demo/templates/src/components/entities/_.tsx.egl</div>
+<div class="title">epsilon-react-demo/src/components/entities/Student.tsx</div>
 <div class="content">
-<pre class="pygments highlight"><code data-lang="text"><span></span>{header}</code></pre>
+<pre class="pygments highlight"><code data-lang="jsx"><table class="linenotable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><pre><span></span>// protected region Add custom rendering code for Student here on begin
+</pre></td></tr></table></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Tại line 29, thêm vào code block sau:</p>
+<p>Đổi từ <code>false</code> sang <code>true</code> nghĩa rằng bạn muốn kích hoạt protected region này. Tại line 41, thay đổi code thành:</p>
 </div>
 <div class="listingblock">
-<div class="title">epsilon-react-demo/templates/src/components/entities/_.tsx.egl</div>
+<div class="title">epsilon-react-demo/src/components/entities/Student.tsx</div>
 <div class="content">
-<pre class="pygments highlight"><code data-lang="text"><span></span>[%= startProtected(out, &quot;//&quot;, &quot;Custom header here&quot;, false, &quot;&quot;) %]
-const header = (
-    &lt;h1&gt;[%= entity.a_name %]&lt;/h1&gt;
-);
-[%= endProtected(out) %]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Mở <code>Student.tsx</code> và đổi <code>off</code> thành <code>on</code> tại line 23. Sau đó thay đổi <code>&lt;h1&gt;Student&lt;/h1&gt;</code> thành</p>
-</div>
-<div class="listingblock">
-<div class="title">epsilon-react-demo/templates/src/components/entities/_.tsx.egl</div>
-<div class="content">
-<pre class="pygments highlight"><code data-lang="jsx"><table class="linenotable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><pre><span></span>// protected region Custom header here on begin
-const header = (
-    &lt;h1 style={{color: &quot;red&quot;}}&gt;Student&lt;/h1&gt;
-);
-// protected region Custom header here end
+<pre class="pygments highlight"><code data-lang="jsx"><table class="linenotable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><pre><span></span>&lt;h1 style={{color: &quot;red&quot;}}&gt;Student&lt;/h1&gt;
 </pre></td></tr></table></code></pre>
 </div>
 </div>
@@ -1769,7 +1793,23 @@ const header = (
 <div class="content">
 <img src="images/pr-student.png" alt="pr student">
 </div>
-<div class="title">Figure 9. Sau khi đã thêm code viết tay</div>
+<div class="title">Figure 12. Sau khi đã thêm code viết tay</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Để ý rằng nếu chúng ta kích hoạt protected region, tất cả nội dung bên trong sẽ được giữ nguyên. Nhưng
+điều này đồng nghĩa với việc nếu bạn update template, file đó sẽ không được update! Vì thế, tốt nhất chúng ta nên giữ
+protected region "nhỏ" và không bao quát tất cả code. Ở đây, bạn có thể tạo một placeholder trong render code của
+<code>Student.tsx</code>, v.d. <code>{header}</code> và tạo <code>const header = (&lt;h1 style={{color: "red"}}&gt;Student&lt;/h1&gt;);</code> bên trong một
+protected region khác.
+</td>
+</tr>
+</table>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1811,18 +1851,30 @@ Nếu chúng ta muốn phóng to chỉ <code>Upper Manager</code> header ra, th�
 sử dụng một cách hiệu quả nhất, xem thêm thông tin <a href="https://aratare-jp.github.io/epsilon-clj/">tại đây</a>.</p>
 </div>
 <div class="paragraph">
-<p>Tổng kết lại, bạn đã học qua:
-- Model
-- Template
-- Template controller
-- Protected region</p>
+<p>Tổng kết lại, bạn đã học qua cách sử dụng:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Model</p>
+</li>
+<li>
+<p>Template</p>
+</li>
+<li>
+<p>Template controller</p>
+</li>
+<li>
+<p>Protected region</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-22 20:26:22 +0700
+Last updated 2021-03-23 13:25:25 +0700
 </div>
 </div>
 </body>
