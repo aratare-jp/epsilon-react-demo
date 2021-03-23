@@ -578,9 +578,9 @@ image::images/upper-manager-after-age.png[]
 
 Textfield của `Age` giờ đây chỉ chấp nhận chữ số đúng như chúng ta muốn.
 
-Hãy thêm attribute `Age` vào entity `Student` hoặc `Lecturer`?
-
 Để tìm hiểu rõ hơn về syntax của EGL, xem thêm https://www.eclipse.org/epsilon/doc/egl/[tại đây].
+
+Hãy thêm attribute `Age` vào entity `Student` hoặc `Lecturer` trước khi sang phần tiếp theo.
 
 [[template-controller]]
 === 5.3. Template controller
@@ -634,7 +634,7 @@ Thay đổi `Home.tsx.egl` để thêm vào component `Docs` mới như sau:
 </Route>
 ----
 
-- Giữa line 63 và 64:
+- Giữa line 62 và 63:
 
 .epsilon-react-demo/templates/src/components/Home.tsx.egl
 [source,jsx,linenums]
@@ -692,9 +692,11 @@ rule Docs transform m : t_model {
 image::images/docs-pre-template.png[]
 
 Mặc dù nhìn không khác biệt so với khi không dùng template, nhưng khi `model.xml` được thay đổi, template
-`Docs.tsx.egl` cũng sẽ thay đổi theo một cách tự động. Bạn có thể một entity mới, v.d. `Room`, để kiểm tra xem.
+`Docs.tsx.egl` cũng sẽ thay đổi theo một cách tự động.
 
 Để tìm hiểu rõ hơn về syntax của EGX, xem thêm https://www.eclipse.org/epsilon/doc/egx/[tại đây].
+
+Hãy thêm một entity mới, v.d. `Room`, để kiểm tra `Docs.tsx` trước khi sang phần tiếp theo.
 
 [[protected-region]]
 === 5.4. Protected Region
