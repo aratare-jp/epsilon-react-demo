@@ -785,9 +785,20 @@ npm start
 </pre></td></tr></table></code></pre>
 </div>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Bạn có thể login với bất kì username hoặc password nào.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>Chúc mừng!
-Bạn vừa tạo một app hoàn chỉnh trong vòng vài phút thay vì vài tuần!</p>
+<p>Chúc mừng! Bạn vừa tạo một app hoàn chỉnh trong vòng vài phút thay vì vài tuần!</p>
 </div>
 </div>
 </div>
@@ -883,8 +894,17 @@ hai link từ <code>lecturer</code> đến <code>course</code>.</p>
 <p>Tuy nhiên, model chỉ được dùng để chứa thông tin, nhưng để <em>thể hiện</em> thông tin (chọn thông tin nào để dùng, thông
 tin nào để lược ra, v.v.) chúng ta cần phải có <em>template</em>.</p>
 </div>
-<div class="paragraph">
-<p>Để hiểu rõ hơn về model, chúng ta sẽ thực hành tại <a href="#model">phần 5.1</a>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Để hiểu rõ hơn về model, chúng ta sẽ thực hành tại <a href="#model">phần 5.1</a>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -912,8 +932,7 @@ Giống như có bản vẽ xây nhà nhưng không có thông số thì chúng 
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><pre><span></span>[%	var CaseUtils = Native(&quot;org.apache.commons.text.CaseUtils&quot;); %]
+<span class="normal">10</span></pre></div></td><td class="code"><pre><span></span>[%	var CaseUtils = Native(&quot;org.apache.commons.text.CaseUtils&quot;); %]
 import {Layout, Menu} from &#39;antd&#39;;
 import {PieChartOutlined, UserOutlined, BookOutlined} from &#39;@ant-design/icons&#39;;
 import React, {useState} from &quot;react&quot;;
@@ -923,7 +942,6 @@ import Main from &quot;./Main&quot;;
         var pascalCase = CaseUtils.toCamelCase(entity.a_name, true, null); %]
 import [%= pascalCase %] from &quot;./entities/[%= pascalCase %]&quot;;
 [%	} %]
-...
 </pre></td></tr></table></code></pre>
 </div>
 </div>
@@ -946,8 +964,17 @@ import [%= pascalCase %] from &quot;./entities/[%= pascalCase %]&quot;;
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Để hiểu rõ hơn về template, chúng ta sẽ thực hành tại <a href="#template">phần 5.2</a>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Để hiểu rõ hơn về template, chúng ta sẽ thực hành tại <a href="#template">phần 5.2</a>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -1045,7 +1072,7 @@ phải thêm hoặc bớt thông tin trong những file đó. Vậy thì chúng 
 </div>
 <div class="paragraph">
 <p>Câu trả lời dễ nhất là <strong><em>template</em></strong>, nhưng điều đó nghĩa rằng tất cả file khác sẽ bị ảnh hưởng chung.
-Và đôi lúc chúng ta chỉ có file mà thôi.</p>
+Và đôi lúc chúng ta không thể thay đổi template vì lý do nào đó (v.d. các project khác sẽ bị ảnh hưởng).</p>
 </div>
 <div class="paragraph">
 <p>Câu trả lời khác là trong <strong><em>file</em></strong>, nhưng tất cả thay đổi sẽ bị xoá (generate đè) khi chúng ta generate lần sau.</p>
@@ -1142,7 +1169,7 @@ console.log(&quot;Hello world!&quot;);
 <div class="sect2">
 <h3 id="model">5.1. Model</h3>
 <div class="paragraph">
-<p>Thêm line code sau vào <code>model.xml</code>:</p>
+<p>Thêm line code sau vào giữa line 13 và 14 trong <code>model.xml</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1256,18 +1283,8 @@ Manager</code> trong model.</p>
 .egl</code> chỉ ra hình dáng và cấu trúc của table và form trên. Sau đó chúng ta sử dụng <code>model.xml</code> để thêm vào thông số,
 v.d. <code>Student</code> bao gồm 2 attribute, <code>Course</code> bao gồm 1 attribute, v.v.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-<div class="title">Câu hỏi</div>
-Điều gì sẽ xảy ra nếu bạn thêm vào một attribute mới tên <code>Age</code> vào entity <code>Upper Manager</code>?
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>Hãy thêm vào attribute <code>Age</code> cho <code>Upper Manager</code> trước khi sang phần tiếp theo.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1340,10 +1357,14 @@ nhanh chóng.
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/db.ts.egl</div>
 <div class="content">
-<pre class="pygments highlight"><code data-lang="text"><span></span>[%	for (attr in entity.c_attribute) {
+<pre class="pygments highlight"><code data-lang="text"><table class="linenotable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><pre><span></span>[%	for (attr in entity.c_attribute) {
         var attrCamelCase = CaseUtils.toCamelCase(attr.text, false, null); %]
     [%= attrCamelCase %]: string,
-[%	} %]</code></pre>
+[%	} %]
+</pre></td></tr></table></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1427,8 +1448,7 @@ TS type dựa trên type của attribute đó.</p>
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/db.ts.egl</div>
 <div class="content">
-<pre class="pygments highlight"><code data-lang="text"><span></span>[% import &quot;../shared.egl&quot;; %]
-...</code></pre>
+<pre class="pygments highlight"><code data-lang="text"><span></span>[% import &quot;../shared.egl&quot;; %]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1458,9 +1478,7 @@ block sau tại cuối template <code>shared.egl</code>:</p>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span></pre></div></td><td class="code"><pre><span></span>...
-[%
+<span class="normal">12</span></pre></div></td><td class="code"><pre><span></span>[%
 operation t_attribute getInputType(): String {
     var type = self.a_type;
     if (type.isUndefined()) {
@@ -1481,8 +1499,7 @@ operation t_attribute getInputType(): String {
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/components/entities/_.tsx.egl</div>
 <div class="content">
-<pre class="pygments highlight"><code data-lang="text"><span></span>[% import &quot;../../../shared.egl&quot;; %]
-...</code></pre>
+<pre class="pygments highlight"><code data-lang="text"><span></span>[% import &quot;../../../shared.egl&quot;; %]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1516,31 +1533,8 @@ operation t_attribute getInputType(): String {
 <div class="paragraph">
 <p>Textfield của <code>Age</code> giờ đây chỉ chấp nhận chữ số đúng như chúng ta muốn.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-<div class="title">Câu hỏi</div>
-Điều gì sẽ xảy ra nếu bạn thêm attribute <code>Age</code> vào entity <code>Student</code> hoặc <code>Lecturer</code>?
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-<div class="title">Câu hỏi nâng cao</div>
-Chúng ta cần phải làm gì để thêm vào type <code>boolean</code>?
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>Hãy thêm attribute <code>Age</code> vào entity <code>Student</code> hoặc <code>Lecturer</code>?</p>
 </div>
 <div class="paragraph">
 <p>Để tìm hiểu rõ hơn về syntax của EGL, xem thêm <a href="https://www.eclipse.org/epsilon/doc/egl/">tại đây</a>.</p>
@@ -1563,7 +1557,7 @@ mắc phải những lỗi vặt không đáng có. Trong phần này, chúng ta
 </table>
 </div>
 <div class="paragraph">
-<p>Giả sử chúng ta muốn có một webpage để liệt kê và giải thích các entity trong model. Trước tiên, tạo file <code>docs.tsx</code>
+<p>Giả sử chúng ta muốn có một webpage để liệt kê và giải thích các entity trong model. Trước tiên, tạo file <code>Docs.tsx</code>
 với nội dung sau:</p>
 </div>
 <div class="listingblock">
@@ -1598,25 +1592,25 @@ với nội dung sau:</p>
 const {Header, Content, Footer} = Layout;
 
 export default function Docs() {
-	return (
-		&lt;Layout className=&quot;site-layout&quot;&gt;
-			&lt;Header className=&quot;site-layout-background&quot; style={{padding: 0}}/&gt;
-			&lt;Content style={{margin: &#39;0 16px&#39;}}&gt;
-				&lt;Breadcrumb style={{margin: &#39;16px 0&#39;}}&gt;
-					&lt;Breadcrumb.Item&gt;Docs&lt;/Breadcrumb.Item&gt;
-				&lt;/Breadcrumb&gt;
-				&lt;div className=&quot;site-layout-background&quot; style={{padding: 24, minHeight: 360}}&gt;
-					&lt;ul&gt;
-						&lt;li&gt;Student&lt;/li&gt;
-						&lt;li&gt;Course&lt;/li&gt;
-						&lt;li&gt;Lecturer&lt;/li&gt;
-						&lt;li&gt;Upper Manager&lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/div&gt;
-			&lt;/Content&gt;
-			&lt;Footer style={{textAlign: &#39;center&#39;}}&gt;Ant Design ©2018 Created by Ant UED&lt;/Footer&gt;
-		&lt;/Layout&gt;
-	);
+    return (
+        &lt;Layout className=&quot;site-layout&quot;&gt;
+            &lt;Header className=&quot;site-layout-background&quot; style={{padding: 0}}/&gt;
+            &lt;Content style={{margin: &#39;0 16px&#39;}}&gt;
+                &lt;Breadcrumb style={{margin: &#39;16px 0&#39;}}&gt;
+                    &lt;Breadcrumb.Item&gt;Docs&lt;/Breadcrumb.Item&gt;
+                &lt;/Breadcrumb&gt;
+                &lt;div className=&quot;site-layout-background&quot; style={{padding: 24, minHeight: 360}}&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;Student&lt;/li&gt;
+                        &lt;li&gt;Course&lt;/li&gt;
+                        &lt;li&gt;Lecturer&lt;/li&gt;
+                        &lt;li&gt;Upper Manager&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/Content&gt;
+            &lt;Footer style={{textAlign: &#39;center&#39;}}&gt;Ant Design ©2018 Created by Ant UED&lt;/Footer&gt;
+        &lt;/Layout&gt;
+    );
 }
 </pre></td></tr></table></code></pre>
 </div>
@@ -1627,7 +1621,7 @@ export default function Docs() {
 <div class="ulist">
 <ul>
 <li>
-<p>Tại line 73:</p>
+<p>Giữa line 72 và 73:</p>
 </li>
 </ul>
 </div>
@@ -1645,7 +1639,7 @@ export default function Docs() {
 <div class="ulist">
 <ul>
 <li>
-<p>Tại line 63:</p>
+<p>Giữa line 63 và 64:</p>
 </li>
 </ul>
 </div>
@@ -1748,7 +1742,7 @@ với nội dung sau:</p>
 template <code>_.tsx.egl</code>.</p>
 </div>
 <div class="paragraph">
-<p>Trước tiên thêm vào line 48 của template <code>_.tsx.egl</code> như sau:</p>
+<p>Trước tiên thêm vào giữa line 47 và 48 của template <code>_.tsx.egl</code> như sau:</p>
 </div>
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/components/entities/_.tsx.egl</div>
@@ -1811,32 +1805,6 @@ protected region khác.
 </tr>
 </table>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-<div class="title">Câu hỏi</div>
-Nếu chúng ta muốn phóng to <em>tất cả</em> header ra, thì chúng ta phải viết code ở đâu?
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-<div class="title">Câu hỏi</div>
-Nếu chúng ta muốn phóng to chỉ <code>Upper Manager</code> header ra, thì chúng ta phải viết code ở đâu?
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p>Để tìm hiểu rõ hơn về protected region, xem thêm <a href="https://www.eclipse.org/epsilon/doc/egl/#merge-engine">tại đây</a>.</p>
 </div>
@@ -1874,7 +1842,7 @@ sử dụng một cách hiệu quả nhất, xem thêm thông tin <a href="https
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-23 14:11:46 +0700
+Last updated 2021-03-23 21:19:19 +0700
 </div>
 </div>
 </body>

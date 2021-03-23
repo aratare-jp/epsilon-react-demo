@@ -149,8 +149,9 @@ npm install
 npm start
 ----
 
-Chúc mừng!
-Bạn vừa tạo một app hoàn chỉnh trong vòng vài phút thay vì vài tuần!
+TIP: Bạn có thể login với bất kì username hoặc password nào.
+
+Chúc mừng! Bạn vừa tạo một app hoàn chỉnh trong vòng vài phút thay vì vài tuần!
 
 [[concept]]
 == 4. Concept
@@ -206,7 +207,7 @@ image::images/schema.png[]
 Tuy nhiên, model chỉ được dùng để chứa thông tin, nhưng để _thể hiện_ thông tin (chọn thông tin nào để dùng, thông
 tin nào để lược ra, v.v.) chúng ta cần phải có _template_.
 
-Để hiểu rõ hơn về model, chúng ta sẽ thực hành tại link:#model[phần 5.1].
+NOTE: Để hiểu rõ hơn về model, chúng ta sẽ thực hành tại link:#model[phần 5.1].
 
 === 4.2. Template
 
@@ -231,7 +232,6 @@ import Main from "./Main";
         var pascalCase = CaseUtils.toCamelCase(entity.a_name, true, null); %]
 import [%= pascalCase %] from "./entities/[%= pascalCase %]";
 [%	} %]
-...
 ----
 
 - Tại line 1, tạo một variable mới tên `CaseUtils`.
@@ -240,7 +240,7 @@ import [%= pascalCase %] from "./entities/[%= pascalCase %]";
 - Tại line 9, tạo string bằng variable `pascalCase` vừa tạo trên.
 - Tại line 10, đóng loop tại line 7.
 
-Để hiểu rõ hơn về template, chúng ta sẽ thực hành tại link:#template[phần 5.2].
+NOTE: Để hiểu rõ hơn về template, chúng ta sẽ thực hành tại link:#template[phần 5.2].
 
 === 4.3. Template Controller
 
@@ -284,7 +284,7 @@ Template đọc thông số từ model và generate nhiều file giống nhau d�
 phải thêm hoặc bớt thông tin trong những file đó. Vậy thì chúng ta nên làm vậy ở đâu?
 
 Câu trả lời dễ nhất là *_template_*, nhưng điều đó nghĩa rằng tất cả file khác sẽ bị ảnh hưởng chung.
-Và đôi lúc chúng ta chỉ có file mà thôi.
+Và đôi lúc chúng ta không thể thay đổi template vì lý do nào đó (v.d. các project khác sẽ bị ảnh hưởng).
 
 Câu trả lời khác là trong *_file_*, nhưng tất cả thay đổi sẽ bị xoá (generate đè) khi chúng ta generate lần sau.
 
@@ -340,7 +340,7 @@ Bây giờ chúng ta sẽ thực hành sử dụng các concept trên.
 [[model]]
 === 5.1. Model
 
-Thêm line code sau vào `model.xml`:
+Thêm line code sau vào giữa line 13 và 14 trong `model.xml`:
 
 [source,xml,linenums]
 ----
@@ -409,8 +409,7 @@ Câu trả lời cho câu hỏi trên là vì template, như bản vẽ xây nh�
 .egl` chỉ ra hình dáng và cấu trúc của table và form trên. Sau đó chúng ta sử dụng `model.xml` để thêm vào thông số,
 v.d. `Student` bao gồm 2 attribute, `Course` bao gồm 1 attribute, v.v.
 
-.Câu hỏi
-NOTE: Điều gì sẽ xảy ra nếu bạn thêm vào một attribute mới tên `Age` vào entity `Upper Manager`?
+Hãy thêm vào attribute `Age` cho `Upper Manager` trước khi sang phần tiếp theo.
 
 [[template]]
 === 5.2. Template
@@ -455,7 +454,7 @@ nhanh chóng.
 Đầu tiên, chúng ta sẽ chỉnh lại `db.ts.egl`. Bạn có thể tìm code block sau từ line 10 đến 13 trong template:
 
 .epsilon-react-demo/templates/src/db.ts.egl
-[source,text]
+[source,text,linenums]
 ----
 [%	for (attr in entity.c_attribute) {
         var attrCamelCase = CaseUtils.toCamelCase(attr.text, false, null); %]
@@ -518,7 +517,6 @@ Chúng ta cần phải import file này vào đầu template `db.tsx.egl`:
 [source,text]
 ----
 [% import "../shared.egl"; %]
-...
 ----
 
 Sau đó chúng ta sẽ chỉnh sửa lại line 13 của `db.ts.egl`:
@@ -535,7 +533,6 @@ block sau tại cuối template `shared.egl`:
 .epsilon-react-demo/templates/shared.egl
 [source,text,linenums]
 ----
-...
 [%
 operation t_attribute getInputType(): String {
     var type = self.a_type;
@@ -556,7 +553,6 @@ Import `shared.egl` vào đầu `_.tsx.egl`:
 [source,text]
 ----
 [% import "../../../shared.egl"; %]
-...
 ----
 
 Tại line 261, thay đổi
@@ -582,11 +578,7 @@ image::images/upper-manager-after-age.png[]
 
 Textfield của `Age` giờ đây chỉ chấp nhận chữ số đúng như chúng ta muốn.
 
-.Câu hỏi
-NOTE: Điều gì sẽ xảy ra nếu bạn thêm attribute `Age` vào entity `Student` hoặc `Lecturer`?
-
-.Câu hỏi nâng cao
-NOTE: Chúng ta cần phải làm gì để thêm vào type `boolean`?
+Hãy thêm attribute `Age` vào entity `Student` hoặc `Lecturer`?
 
 Để tìm hiểu rõ hơn về syntax của EGL, xem thêm https://www.eclipse.org/epsilon/doc/egl/[tại đây].
 
@@ -597,7 +589,7 @@ TIP: Để dễ dàng hơn trong việc tạo template mới, bạn nên tạo f
 sẽ giúp rất nhiều khi bạn muốn copy sang template, vì template không có autocompletion hoặc linting, nên sẽ rất dễ
 mắc phải những lỗi vặt không đáng có. Trong phần này, chúng ta sẽ tạo file trước và sau đó copy sang template.
 
-Giả sử chúng ta muốn có một webpage để liệt kê và giải thích các entity trong model. Trước tiên, tạo file `docs.tsx`
+Giả sử chúng ta muốn có một webpage để liệt kê và giải thích các entity trong model. Trước tiên, tạo file `Docs.tsx`
 với nội dung sau:
 
 .epsilon-react-demo/university/src/components/Docs.tsx
@@ -608,31 +600,31 @@ import {Breadcrumb, Layout} from 'antd';
 const {Header, Content, Footer} = Layout;
 
 export default function Docs() {
-	return (
-		<Layout className="site-layout">
-			<Header className="site-layout-background" style={{padding: 0}}/>
-			<Content style={{margin: '0 16px'}}>
-				<Breadcrumb style={{margin: '16px 0'}}>
-					<Breadcrumb.Item>Docs</Breadcrumb.Item>
-				</Breadcrumb>
-				<div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-					<ul>
-						<li>Student</li>
-						<li>Course</li>
-						<li>Lecturer</li>
-						<li>Upper Manager</li>
-					</ul>
-				</div>
-			</Content>
-			<Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
-		</Layout>
-	);
+    return (
+        <Layout className="site-layout">
+            <Header className="site-layout-background" style={{padding: 0}}/>
+            <Content style={{margin: '0 16px'}}>
+                <Breadcrumb style={{margin: '16px 0'}}>
+                    <Breadcrumb.Item>Docs</Breadcrumb.Item>
+                </Breadcrumb>
+                <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+                    <ul>
+                        <li>Student</li>
+                        <li>Course</li>
+                        <li>Lecturer</li>
+                        <li>Upper Manager</li>
+                    </ul>
+                </div>
+            </Content>
+            <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
+        </Layout>
+    );
 }
 ----
 
 Thay đổi `Home.tsx.egl` để thêm vào component `Docs` mới như sau:
 
-- Tại line 73:
+- Giữa line 72 và 73:
 
 .epsilon-react-demo/templates/src/components/Home.tsx.egl
 [source,jsx,linenums]
@@ -642,7 +634,7 @@ Thay đổi `Home.tsx.egl` để thêm vào component `Docs` mới như sau:
 </Route>
 ----
 
-- Tại line 63:
+- Giữa line 63 và 64:
 
 .epsilon-react-demo/templates/src/components/Home.tsx.egl
 [source,jsx,linenums]
@@ -710,7 +702,7 @@ Mặc dù nhìn không khác biệt so với khi không dùng template, nhưng k
 Giả sử chúng ta muốn thêm vào label cho tất cả entity nhằm dễ nhận biết hơn. Trong phần này, chúng ta sẽ sử dụng
 template `_.tsx.egl`.
 
-Trước tiên thêm vào line 48 của template `_.tsx.egl` như sau:
+Trước tiên thêm vào giữa line 47 và 48 của template `_.tsx.egl` như sau:
 
 .epsilon-react-demo/templates/src/components/entities/_.tsx.egl
 [source,text]
@@ -751,15 +743,10 @@ protected region "nhỏ" và không bao quát tất cả code. Ở đây, bạn 
 `Student.tsx`, v.d. `{header}` và tạo `const header = (<h1 style={{color: "red"}}>Student</h1>);` bên trong một
 protected region khác.
 
-.Câu hỏi
-NOTE: Nếu chúng ta muốn phóng to _tất cả_ header ra, thì chúng ta phải viết code ở đâu?
-
-.Câu hỏi
-NOTE: Nếu chúng ta muốn phóng to chỉ `Upper Manager` header ra, thì chúng ta phải viết code ở đâu?
-
 Để tìm hiểu rõ hơn về protected region, xem thêm https://www.eclipse.org/epsilon/doc/egl/#merge-engine[tại đây].
 
 == 6. Tổng kết
+
 Chúc mừng bạn đã hoàn thành buổi thực hành này. Tuy nhiên, đây chỉ nhằm giới thiệu bạn với `epsilon-clj` mà thôi. Để
 sử dụng một cách hiệu quả nhất, xem thêm thông tin https://aratare-jp.github.io/epsilon-clj/[tại đây].
 
