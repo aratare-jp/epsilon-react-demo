@@ -98,7 +98,7 @@ Trước khi bắt đầu, đảm bảo rằng project của bạn trông như t
 ----
 epsilon-react-demo
 ├── README.md
-├── epsilon-v1.3.1-standalone.jar
+├── epsilon-v1.4.0-SNAPSHOT-standalone.jar
 ├── model.xml
 └── templates
     └── ...
@@ -108,12 +108,12 @@ Mở Terminal và chạy câu lệnh sau:
 
 [source,bash,linenums]
 ----
-java -jar epsilon-v1.3.1-standalone.jar -d templates -m model.xml -o university -w generate
+java -jar epsilon-v1.4.0-SNAPSHOT-standalone.jar -d templates -m model.xml -o university -w generate
 ----
 
 Câu lệnh trên bao gồm:
 
-- `java jar epsilon.v1.3.1-standalone.jar`: chạy file Jar
+- `java jar epsilon.v1.4.0-SNAPSHOT-standalone.jar`: chạy file Jar
 - `-d templates`: nơi chứa tất cả template
 - `-m model.xml`: model để sử dụng
 - `-o university`: viết (generate) tất cả file vào `university`
@@ -128,7 +128,7 @@ Sau khi chạy xong, project của bạn sẽ nhìn như thế này:
 ----
 epsilon-react-demo
 ├── README.md
-├── epsilon-v1.3.1-standalone.jar
+├── epsilon-v1.4.0-SNAPSHOT-standalone.jar
 ├── model.xml
 ├── templates
 │   └── ...
@@ -399,7 +399,7 @@ Bạn có thể thử tạo ra một Upper Manager mới bằng cách click vào
 .Form add Upper Manager
 image::images/upper-manager-form.png[]
 
-Ta có thể thấy trong form có 2 textfield, `First Name` và `LastName`, tương tự với 2 attribute của entity `Upper
+Ta có thể thấy trong form có 2 textfield, `First Name` và `Last Name`, tương tự với 2 attribute của entity `Upper
 Manager` trong model.
 
 Làm sao chúng ta lại có được 2 cột và 2 textfield như thế này? Thực tế, nếu bạn check `Student`, `Course` hay
