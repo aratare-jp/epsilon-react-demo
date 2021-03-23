@@ -70,7 +70,8 @@ git clone https://github.com/aratare-jp/epsilon-react-demo.git
 cd epsilon-react-demo
 ----
 
-Tải `epsilon-clj` tại https://github.com/aratare-jp/epsilon-clj/releases[đây] và đặt vào `C:\epsilon-react-demo`.
+Tải `epsilon-v1.4.0-SNAPSHOT-standalone.jar` tại https://github.com/aratare-jp/epsilon-clj/releases[đây] và đặt vào
+`~\epsilon-react-demo`.
 
 === 2.2. Linux/macOS
 
@@ -85,14 +86,15 @@ git clone https://github.com/aratare-jp/epsilon-react-demo.git
 cd epsilon-react-demo
 ----
 
-Tải `epsilon-clj` tại https://github.com/aratare-jp/epsilon-clj/releases[đây] và đặt vào `~/epsilon-react-demo`.
+Tải `epsilon-v1.4.0-SNAPSHOT-standalone.jar` tại https://github.com/aratare-jp/epsilon-clj/releases[đây] và đặt vào
+`~/epsilon-react-demo`.
 
 == 3. Chạy thử
 
 IMPORTANT: Từ đây về sau, tất cả câu lệnh trong bài viết này sẽ được chạy trên Linux, nhưng trên Windows sẽ gần như
 không có thay đổi.
 
-Trước khi bắt đầu, đảm bảo rằng project của bạn trông như thế này:
+Trước khi bắt đầu, đảm bảo rằng project của bạn trông như thế này (đừng quan tâm đến các file khác):
 
 [source]
 ----
@@ -214,16 +216,14 @@ Hình dung template giống như bản vẽ xây nhà. Với template, chúng ta
 Tuy nhiên, template chỉ bao gồm hình dáng, nhưng không có thông số. Để thêm vào thông số, chúng ta cần phải có model.
 Giống như có bản vẽ xây nhà nhưng không có thông số thì chúng ta sẽ rất khó để xây được bất kì căn nhà nào!
 
-Để tạo ra một template, chúng ta cần phải tạo một file dạng `.egl` (thông tin thêm
-https://www.eclipse.org/epsilon/doc/egl[tại đây]). Bạn có thể xem sơ qua
-`epsilon-react-demo/templates/src/components/Home.tsx.egl`:
+Để tạo ra một template, chúng ta cần phải tạo một file dạng `.egl`. Bạn có thể xem sơ qua `Home.tsx.egl`:
 
 .epsilon-react-demo/templates/src/components/Home.tsx.egl
 [source,text,linenums]
 ----
 [%	var CaseUtils = Native("org.apache.commons.text.CaseUtils"); %]
 import {Layout, Menu} from 'antd';
-import {PieChartOutlined, UserOutlined} from '@ant-design/icons';
+import {PieChartOutlined, UserOutlined, BookOutlined} from '@ant-design/icons';
 import React, {useState} from "react";
 import {Link, Redirect, Route, Switch, useLocation, useRouteMatch} from "react-router-dom";
 import Main from "./Main";
@@ -237,7 +237,7 @@ import [%= pascalCase %] from "./entities/[%= pascalCase %]";
 - Tại line 1, tạo một variable mới tên `CaseUtils`.
 - Tại line 7, loop qua tất cả entity trong model.
 - Tại line 8, tạo một local variable tên `pascalCase` bằng tên của entity hiện tại.
-- Tại line 9, tạo line string bằng variable `pascalCase` vừa tạo trên.
+- Tại line 9, tạo string bằng variable `pascalCase` vừa tạo trên.
 - Tại line 10, đóng loop tại line 7.
 
 Để hiểu rõ hơn về template, chúng ta sẽ thực hành tại link:#template[phần 5.2].
@@ -247,7 +247,7 @@ import [%= pascalCase %] from "./entities/[%= pascalCase %]";
 Bản thân template không có khả năng generate, nên chúng ta cần phải thêm _template controller_.
 
 Template controller, như cái tên của nó, điều khiển và hướng dẫn `epsilon-clj` generate ra các file cần thiết.
-Chúng ta cũng có thể xem qua `epsilon-react-demo/templates/src/components/Home.tsx.egx`:
+Chúng ta cũng có thể xem qua `Home.tsx.egx`:
 
 .epsilon-react-demo/templates/src/components/Home.tsx.egx
 [source,text,linenums]
@@ -600,7 +600,7 @@ mắc phải những lỗi vặt không đáng có. Trong phần này, chúng ta
 Giả sử chúng ta muốn có một webpage để liệt kê và giải thích các entity trong model. Trước tiên, tạo file `docs.tsx`
 với nội dung sau:
 
-.epsilon-react-demo/src/components/Docs.tsx
+.epsilon-react-demo/university/src/components/Docs.tsx
 [source,tsx,linenums]
 ----
 import {Breadcrumb, Layout} from 'antd';
@@ -732,7 +732,7 @@ cần protected region để thay đổi màu font. Tại line 32 của `Student
 // protected region Add custom rendering code for Student here on begin
 ----
 
-Đổi từ `false` sang `true` nghĩa rằng bạn muốn kích hoạt protected region này. Tại line 41, thay đổi code thành:
+Đổi từ `off` sang `on` nghĩa rằng bạn muốn kích hoạt protected region này. Tại line 41, thay đổi code thành:
 
 .epsilon-react-demo/src/components/entities/Student.tsx
 [source,jsx,text]

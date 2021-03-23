@@ -653,7 +653,8 @@ số tính năng mới. Kết thúc bài viết này, bạn sẽ hiểu được
 </div>
 </div>
 <div class="paragraph">
-<p>Tải <code>epsilon-clj</code> tại <a href="https://github.com/aratare-jp/epsilon-clj/releases">đây</a> và đặt vào <code>C:\epsilon-react-demo</code>.</p>
+<p>Tải <code>epsilon-v1.4.0-SNAPSHOT-standalone.jar</code> tại <a href="https://github.com/aratare-jp/epsilon-clj/releases">đây</a> và đặt vào
+<code>~\epsilon-react-demo</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -671,7 +672,8 @@ git clone https://github.com/aratare-jp/epsilon-react-demo.git
 </div>
 </div>
 <div class="paragraph">
-<p>Tải <code>epsilon-clj</code> tại <a href="https://github.com/aratare-jp/epsilon-clj/releases">đây</a> và đặt vào <code>~/epsilon-react-demo</code>.</p>
+<p>Tải <code>epsilon-v1.4.0-SNAPSHOT-standalone.jar</code> tại <a href="https://github.com/aratare-jp/epsilon-clj/releases">đây</a> và đặt vào
+<code>~/epsilon-react-demo</code>.</p>
 </div>
 </div>
 </div>
@@ -693,7 +695,7 @@ không có thay đổi.
 </table>
 </div>
 <div class="paragraph">
-<p>Trước khi bắt đầu, đảm bảo rằng project của bạn trông như thế này:</p>
+<p>Trước khi bắt đầu, đảm bảo rằng project của bạn trông như thế này (đừng quan tâm đến các file khác):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -896,9 +898,7 @@ tin nào để lược ra, v.v.) chúng ta cần phải có <em>template</em>.</
 Giống như có bản vẽ xây nhà nhưng không có thông số thì chúng ta sẽ rất khó để xây được bất kì căn nhà nào!</p>
 </div>
 <div class="paragraph">
-<p>Để tạo ra một template, chúng ta cần phải tạo một file dạng <code>.egl</code> (thông tin thêm
-<a href="https://www.eclipse.org/epsilon/doc/egl">tại đây</a>). Bạn có thể xem sơ qua
-<code>epsilon-react-demo/templates/src/components/Home.tsx.egl</code>:</p>
+<p>Để tạo ra một template, chúng ta cần phải tạo một file dạng <code>.egl</code>. Bạn có thể xem sơ qua <code>Home.tsx.egl</code>:</p>
 </div>
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/components/Home.tsx.egl</div>
@@ -915,7 +915,7 @@ Giống như có bản vẽ xây nhà nhưng không có thông số thì chúng 
 <span class="normal">10</span>
 <span class="normal">11</span></pre></div></td><td class="code"><pre><span></span>[%	var CaseUtils = Native(&quot;org.apache.commons.text.CaseUtils&quot;); %]
 import {Layout, Menu} from &#39;antd&#39;;
-import {PieChartOutlined, UserOutlined} from &#39;@ant-design/icons&#39;;
+import {PieChartOutlined, UserOutlined, BookOutlined} from &#39;@ant-design/icons&#39;;
 import React, {useState} from &quot;react&quot;;
 import {Link, Redirect, Route, Switch, useLocation, useRouteMatch} from &quot;react-router-dom&quot;;
 import Main from &quot;./Main&quot;;
@@ -939,7 +939,7 @@ import [%= pascalCase %] from &quot;./entities/[%= pascalCase %]&quot;;
 <p>Tại line 8, tạo một local variable tên <code>pascalCase</code> bằng tên của entity hiện tại.</p>
 </li>
 <li>
-<p>Tại line 9, tạo line string bằng variable <code>pascalCase</code> vừa tạo trên.</p>
+<p>Tại line 9, tạo string bằng variable <code>pascalCase</code> vừa tạo trên.</p>
 </li>
 <li>
 <p>Tại line 10, đóng loop tại line 7.</p>
@@ -957,7 +957,7 @@ import [%= pascalCase %] from &quot;./entities/[%= pascalCase %]&quot;;
 </div>
 <div class="paragraph">
 <p>Template controller, như cái tên của nó, điều khiển và hướng dẫn <code>epsilon-clj</code> generate ra các file cần thiết.
-Chúng ta cũng có thể xem qua <code>epsilon-react-demo/templates/src/components/Home.tsx.egx</code>:</p>
+Chúng ta cũng có thể xem qua <code>Home.tsx.egx</code>:</p>
 </div>
 <div class="listingblock">
 <div class="title">epsilon-react-demo/templates/src/components/Home.tsx.egx</div>
@@ -1567,7 +1567,7 @@ mắc phải những lỗi vặt không đáng có. Trong phần này, chúng ta
 với nội dung sau:</p>
 </div>
 <div class="listingblock">
-<div class="title">epsilon-react-demo/src/components/Docs.tsx</div>
+<div class="title">epsilon-react-demo/university/src/components/Docs.tsx</div>
 <div class="content">
 <pre class="pygments highlight"><code data-lang="tsx"><table class="linenotable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1777,7 +1777,7 @@ cần protected region để thay đổi màu font. Tại line 32 của <code>St
 </div>
 </div>
 <div class="paragraph">
-<p>Đổi từ <code>false</code> sang <code>true</code> nghĩa rằng bạn muốn kích hoạt protected region này. Tại line 41, thay đổi code thành:</p>
+<p>Đổi từ <code>off</code> sang <code>on</code> nghĩa rằng bạn muốn kích hoạt protected region này. Tại line 41, thay đổi code thành:</p>
 </div>
 <div class="listingblock">
 <div class="title">epsilon-react-demo/src/components/entities/Student.tsx</div>
@@ -1874,7 +1874,7 @@ sử dụng một cách hiệu quả nhất, xem thêm thông tin <a href="https
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-23 13:38:01 +0700
+Last updated 2021-03-23 14:11:46 +0700
 </div>
 </div>
 </body>
